@@ -1,0 +1,75 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Job {
+  id              String   @id @default(uuid())
+  externalId      String?  @unique
+  company         String
+  logoUrl         String?
+  title           String
+  location        String
+  experienceLevel String   @default("Fresher")
+  companyType     String   @default("Product") // "Product" or "Service"
+  country         String   @default("India") // "India" or "Worldwide"
+  state           String?  // e.g. "Kerala", "Karnataka", "Tamil Nadu", "Telangana", "Maharashtra", "NCR"
+  district        String?  // e.g. "Ernakulam (Kochi)", "Thiruvananthapuram", "Kozhikode", "Thrissur", "Kottayam"
+  postedDate      DateTime
+  applyUrl        String
+  source          String   @default("Aggregator")
+  isArchived      Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  savedItems      SavedItem[]
+
+  @@index([company])
+  @@index([companyType])
+  @@index([country])
+  @@index([state])
+  @@index([district])
+  @@index([postedDate])
+  @@index([isArchived])
+}
+
+model Exam {
+  id                   String      @id @default(uuid())
+  name                 String
+  conductingBody       String
+  category             String      @default("Teaching & Lectureship")
+  notificationDate     DateTime
+  applicationStartDate DateTime
+  applicationEndDate   DateTime
+  examDate             DateTime?
+  officialUrl          String
+  description          String?
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+  savedItems           SavedItem[]
+
+  @@index([applicationEndDate])
+}
+
+model SavedItem {
+  id        String   @id @default(uuid())
+  itemType  String   // "JOB" or "EXAM"
+  jobId     String?
+  examId    String?
+  job       Job?     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  exam      Exam?    @relation(fields: [examId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model JobSource {
+  id         String    @id @default(uuid())
+  name       String    @unique
+  enabled    Boolean   @default(true)
+  lastSyncAt DateTime?
+  syncCount  Int       @default(0)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
