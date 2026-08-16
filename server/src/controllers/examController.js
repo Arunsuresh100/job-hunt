@@ -2,22 +2,30 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 /**
- * Get Exam Updates sorted by nearest deadline first
+ * Get Exam Updates (defaults to Kerala exams) sorted by nearest deadline first
  */
 const getExams = async (req, res) => {
   try {
-    const { category, search } = req.query;
+    const { category, search, keralaOnly } = req.query;
     const where = {};
 
-    if (category) {
-      where.category = category;
+    // Filter Kerala exams by default unless explicitly disabled
+    if (keralaOnly !== 'false') {
+      where.isKerala = true;
     }
 
-    if (search) {
+    if (category && category.trim() !== '') {
+      const catClean = category.trim();
+      where.category = { contains: catClean };
+    }
+
+    if (search && search.trim() !== '') {
+      const query = search.trim();
       where.OR = [
-        { name: { contains: search } },
-        { conductingBody: { contains: search } },
-        { category: { contains: search } }
+        { name: { contains: query } },
+        { conductingBody: { contains: query } },
+        { category: { contains: query } },
+        { description: { contains: query } }
       ];
     }
 
@@ -63,6 +71,9 @@ const createExam = async (req, res) => {
       name,
       conductingBody,
       category,
+      location,
+      state,
+      isKerala,
       notificationDate,
       applicationStartDate,
       applicationEndDate,
@@ -83,6 +94,9 @@ const createExam = async (req, res) => {
         name,
         conductingBody,
         category: category || 'Teaching & Lectureship',
+        location: location || 'Kerala',
+        state: state || 'Kerala',
+        isKerala: isKerala !== undefined ? Boolean(isKerala) : true,
         notificationDate: notificationDate ? new Date(notificationDate) : new Date(),
         applicationStartDate: applicationStartDate ? new Date(applicationStartDate) : new Date(),
         applicationEndDate: new Date(applicationEndDate),
@@ -105,7 +119,7 @@ const createExam = async (req, res) => {
 const updateExam = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = req.body;
+    const data = { ...req.body };
 
     if (data.notificationDate) data.notificationDate = new Date(data.notificationDate);
     if (data.applicationStartDate) data.applicationStartDate = new Date(data.applicationStartDate);

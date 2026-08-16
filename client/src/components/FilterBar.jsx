@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, X, Check, ChevronDown, Building2, RotateCcw, Box, Layers, LayoutGrid, Rocket } from 'lucide-react';
+import { Search, X, Check, ChevronDown, Building2, Box, Layers, LayoutGrid, Rocket } from 'lucide-react';
 
 const FilterBar = ({
   search,
@@ -9,10 +9,12 @@ const FilterBar = ({
   companiesList = [],
   companyType = 'ALL',
   setCompanyType,
-  indiaOnly = false,
+  indiaOnly = true,
   setIndiaOnly,
   fresherOnly,
   setFresherOnly,
+  expLevel = 'ALL',
+  setExpLevel,
   showArchived,
   setShowArchived,
   onReset
@@ -21,7 +23,7 @@ const FilterBar = ({
   const [companySearch, setCompanySearch] = useState('');
   const dropdownRef = useRef(null);
 
-  const isFiltered = search || selectedCompany || (companyType && companyType !== 'ALL') || indiaOnly || !fresherOnly || showArchived;
+  const isFiltered = search || selectedCompany || (companyType && companyType !== 'ALL') || expLevel !== 'ALL';
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -39,7 +41,7 @@ const FilterBar = ({
   );
 
   return (
-    <div className="mono-panel p-4 rounded-xl border border-zinc-800 space-y-3.5 mb-6">
+    <div className={`mono-panel p-4 rounded-xl border border-zinc-800 space-y-3.5 mb-6 relative transition-all ${dropdownOpen ? 'z-40' : 'z-20'}`}>
       
       <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
         
@@ -68,26 +70,20 @@ const FilterBar = ({
           <button
             type="button"
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className={`w-full px-3.5 py-2.5 bg-zinc-950 border rounded-xl text-xs text-left flex items-center justify-between transition-all ${
-              dropdownOpen
-                ? 'border-indigo-500/80 ring-2 ring-indigo-500/20 text-white'
-                : selectedCompany
-                ? 'border-zinc-700 text-white'
-                : 'border-zinc-800 text-zinc-300 hover:border-zinc-700'
-            }`}
+            className="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 hover:border-zinc-700 rounded-xl text-xs text-white flex items-center justify-between transition-colors focus:outline-none"
           >
-            <div className="flex items-center space-x-2 truncate pr-2">
-              <Building2 className={`w-4 h-4 flex-shrink-0 ${selectedCompany ? 'text-indigo-400' : 'text-zinc-500'}`} />
-              <span className="truncate">
+            <div className="flex items-center space-x-2 truncate">
+              <Building2 className="w-3.5 h-3.5 text-zinc-500 flex-shrink-0" />
+              <span className="font-medium text-zinc-300 truncate">
                 {selectedCompany || 'All Companies'}
               </span>
             </div>
-            <ChevronDown className={`w-4 h-4 text-zinc-400 transition-transform duration-200 flex-shrink-0 ${dropdownOpen ? 'rotate-180 text-white' : ''}`} />
+            <ChevronDown className={`w-3.5 h-3.5 text-zinc-400 transition-transform ${dropdownOpen ? 'rotate-180 text-white' : ''}`} />
           </button>
 
-          {/* Modern Dropdown Popover */}
+          {/* Modern Dropdown Popover (Floating z-[100] on top of all job cards) */}
           {dropdownOpen && (
-            <div className="absolute z-50 left-0 right-0 top-full mt-1.5 bg-zinc-950/95 backdrop-blur-xl border border-zinc-800 rounded-xl shadow-2xl overflow-hidden py-1.5 animate-in fade-in zoom-in-95 duration-150">
+            <div className="absolute z-[100] left-0 right-0 top-full mt-1.5 bg-zinc-950 border border-zinc-800 rounded-xl shadow-2xl overflow-hidden py-1.5 animate-in fade-in zoom-in-95 duration-150">
               
               {/* Quick Search inside Dropdown */}
               {companiesList.length > 4 && (
@@ -156,67 +152,37 @@ const FilterBar = ({
           )}
         </div>
 
-        {/* Toggles */}
-        <div className="sm:col-span-3 flex flex-wrap items-center justify-between sm:justify-end gap-1.5">
-          
-          {setIndiaOnly && (
-            <button
-              type="button"
-              onClick={() => setIndiaOnly(!indiaOnly)}
-              className={`flex-1 sm:flex-initial flex items-center justify-center space-x-1 px-2.5 py-2 rounded-xl text-xs font-semibold border transition-all active:scale-95 whitespace-nowrap ${
-                indiaOnly
-                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-sm'
-                  : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white'
-              }`}
-            >
-              <span>🇮🇳 India Only</span>
-              <div className={`w-3 h-3 rounded-full flex items-center justify-center ${indiaOnly ? 'bg-emerald-500 text-black' : 'bg-zinc-800'}`}>
-                {indiaOnly && <Check className="w-2 h-2 stroke-[3]" />}
-              </div>
-            </button>
-          )}
-
+        {/* Experience Buttons Row (2 buttons in 1 row) */}
+        <div className="sm:col-span-3 grid grid-cols-2 gap-1.5 w-full">
           <button
             type="button"
-            onClick={() => setFresherOnly(!fresherOnly)}
-            className={`flex-1 sm:flex-initial flex items-center justify-center space-x-1 px-2.5 py-2 rounded-xl text-xs font-medium border transition-all active:scale-95 whitespace-nowrap ${
-              fresherOnly
+            onClick={() => setExpLevel && setExpLevel(expLevel === 'FRESHER' ? 'ALL' : 'FRESHER')}
+            className={`flex items-center justify-center space-x-1 px-2 py-2 rounded-xl text-xs font-semibold border transition-all active:scale-95 whitespace-nowrap ${
+              expLevel === 'FRESHER' || (expLevel === 'ALL' && fresherOnly)
                 ? 'bg-white text-black border-white shadow-sm'
                 : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white'
             }`}
           >
-            <span>Fresher</span>
-            <div className={`w-3 h-3 rounded-full flex items-center justify-center ${fresherOnly ? 'bg-black text-white' : 'bg-zinc-800'}`}>
-              {fresherOnly && <Check className="w-2 h-2 stroke-[3]" />}
+            <span>Freshers</span>
+            <div className={`w-3 h-3 rounded-full flex items-center justify-center ${expLevel === 'FRESHER' || (expLevel === 'ALL' && fresherOnly) ? 'bg-black text-white' : 'bg-zinc-800'}`}>
+              {(expLevel === 'FRESHER' || (expLevel === 'ALL' && fresherOnly)) && <Check className="w-2 h-2 stroke-[3]" />}
             </div>
           </button>
 
           <button
             type="button"
-            onClick={() => setShowArchived(!showArchived)}
-            className={`flex-1 sm:flex-initial flex items-center justify-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-medium border transition-all active:scale-95 whitespace-nowrap ${
-              showArchived
+            onClick={() => setExpLevel && setExpLevel(expLevel === 'ONE_YEAR' ? 'ALL' : 'ONE_YEAR')}
+            className={`flex items-center justify-center space-x-1 px-2 py-2 rounded-xl text-xs font-semibold border transition-all active:scale-95 whitespace-nowrap ${
+              expLevel === 'ONE_YEAR'
                 ? 'bg-white text-black border-white shadow-sm'
                 : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white'
             }`}
           >
-            <span>Archived</span>
-            <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${showArchived ? 'bg-black text-white' : 'bg-zinc-800'}`}>
-              {showArchived && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+            <span>1 Year Exp</span>
+            <div className={`w-3 h-3 rounded-full flex items-center justify-center ${expLevel === 'ONE_YEAR' ? 'bg-black text-white' : 'bg-zinc-800'}`}>
+              {expLevel === 'ONE_YEAR' && <Check className="w-2 h-2 stroke-[3]" />}
             </div>
           </button>
-
-          {isFiltered && (
-            <button
-              type="button"
-              onClick={onReset}
-              className="p-2.5 text-xs text-zinc-400 hover:text-white bg-zinc-950 border border-zinc-800 rounded-xl hover:border-zinc-700 transition-colors flex-shrink-0"
-              title="Reset Filters"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
-          )}
-
         </div>
 
       </div>

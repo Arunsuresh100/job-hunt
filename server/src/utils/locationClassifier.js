@@ -84,6 +84,25 @@ const INDIAN_STATES_MAP = [
   }
 ];
 
+const FOREIGN_KEYWORDS = [
+  'germany', 'düsseldorf', 'dusseldorf', 'munich', 'münchen', 'berlin', 'hamburg', 'frankfurt', 
+  'stuttgart', 'cologne', 'köln', 'leipzig', 'dresden', 'essen', 'nuremberg', 'nürnberg', 'bonn',
+  'united states', 'usa', 'us remote', 'new york', 'california', 'san francisco', 'austin', 'seattle',
+  'united kingdom', 'uk', 'london', 'manchester', 'birmingham',
+  'canada', 'toronto', 'vancouver', 'montreal',
+  'australia', 'sydney', 'melbourne',
+  'europe', 'eu remote', 'netherlands', 'amsterdam', 'france', 'paris', 'spain', 'madrid', 
+  'barcelona', 'switzerland', 'zurich', 'poland', 'warsaw', 'sweden', 'stockholm', 'singapore', 
+  'japan', 'tokyo', 'dubai', 'uae', 'worldwide', 'global remote'
+];
+
+const EXPLICIT_INDIA_KEYWORDS = [
+  'india', 'pan india', 'pan-india', 'kerala', 'karnataka', 'tamil nadu', 'telangana', 'maharashtra', 
+  'delhi', 'ncr', 'bengaluru', 'bangalore', 'hyderabad', 'mumbai', 'pune', 'chennai', 'kochi', 
+  'cochin', 'trivandrum', 'thiruvananthapuram', 'technopark', 'infopark', 'cyberpark', 'calicut', 
+  'kozhikode', 'noida', 'gurgaon', 'gurugram', 'kolkata', 'ahmedabad', 'jaipur', 'indore', 'coimbatore', 'mysore'
+];
+
 /**
  * Classifies location string into { country, state, district }
  * @param {string} locationStr 
@@ -92,31 +111,34 @@ const INDIAN_STATES_MAP = [
 function classifyLocation(locationStr = '', titleStr = '') {
   const text = `${locationStr} ${titleStr}`.toLowerCase();
 
-  // 1. Detect Country
-  let country = 'India';
-  const isWorldwide = text.includes('worldwide') || text.includes('berlin') || text.includes('germany') || text.includes('us remote') || text.includes('europe');
-  const isExplicitIndia = text.includes('india') || text.includes('pan india') || text.includes('kerala') || text.includes('bengaluru') || text.includes('hyderabad') || text.includes('mumbai') || text.includes('delhi') || text.includes('chennai') || text.includes('kochi') || text.includes('trivandrum');
+  const isExplicitIndia = EXPLICIT_INDIA_KEYWORDS.some(kw => text.includes(kw));
+  const isForeign = FOREIGN_KEYWORDS.some(kw => text.includes(kw));
 
-  if (isWorldwide && !isExplicitIndia) {
+  let country = 'India';
+  if (isExplicitIndia) {
+    country = 'India';
+  } else if (isForeign) {
     country = 'Worldwide';
   } else {
-    country = 'India';
+    // Safety Fallback: Default unrecognized API locations to Worldwide instead of forcing India
+    country = 'Worldwide';
   }
 
-  // 2. Detect Indian State
+  // Detect Indian State
   let state = null;
-  for (const s of INDIAN_STATES_MAP) {
-    if (s.keywords.some(kw => text.includes(kw))) {
-      state = s.name;
-      break;
+  if (country === 'India') {
+    for (const s of INDIAN_STATES_MAP) {
+      if (s.keywords.some(kw => text.includes(kw))) {
+        state = s.name;
+        break;
+      }
+    }
+    if (!state) {
+      state = 'India (Remote / Pan-India)';
     }
   }
 
-  if (!state && country === 'India') {
-    state = 'India (Remote / Pan-India)';
-  }
-
-  // 3. Detect Kerala District
+  // Detect Kerala District
   let district = null;
   if (state === 'Kerala') {
     for (const d of KERALA_DISTRICT_MAP) {
@@ -142,3 +164,4 @@ module.exports = {
   KERALA_DISTRICT_MAP,
   INDIAN_STATES_MAP
 };
+

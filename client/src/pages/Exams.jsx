@@ -112,6 +112,8 @@ const Exams = ({ onUpdateSavedCount }) => {
   const categories = [
     { label: 'All Exams', value: '' },
     { label: 'Teaching & Lectureship', value: 'Teaching & Lectureship' },
+    { label: 'Kerala PSC & State Exams', value: 'Kerala PSC & State Exams' },
+    { label: 'MCA & Entrance Exams', value: 'MCA & Entrance Exams' },
     { label: 'Engineering & Higher Studies', value: 'Engineering & Higher Studies' },
   ];
 
@@ -121,10 +123,10 @@ const Exams = ({ onUpdateSavedCount }) => {
       <div className="mono-panel p-5 sm:p-6 rounded-xl border border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight capitalize">
-            Exam Updates & Notifications
+            Kerala Exam Notifications & Updates
           </h1>
           <p className="text-xs text-zinc-400 mt-1 capitalize">
-            Track Official Exam Schedules, Application Deadlines, And Portal Verification
+            Official Kerala State Exams (K-SET, KPSC, MCA Entrance) & National Exams with Kerala Test Centres
           </p>
         </div>
 

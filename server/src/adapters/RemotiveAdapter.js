@@ -33,10 +33,10 @@ class RemotiveAdapter extends BaseAdapter {
           logoUrl: null, // Avoid 403 NotSameOrigin hotlink error from remotive CDN
           title: item.title,
           location: item.candidate_required_location || 'Remote / Worldwide',
-          experienceLevel: item.job_type === 'full_time' ? 'Fresher (0-2 Yrs)' : 'Entry Level / Trainee',
           postedDate: item.publication_date ? new Date(item.publication_date) : new Date(),
           applyUrl: item.url,
-          source: 'Remotive API'
+          source: 'Remotive API',
+          tags: Array.isArray(item.tags) ? item.tags : []
         });
       });
 

@@ -32,11 +32,11 @@ class ArbeitnowAdapter extends BaseAdapter {
           company: item.company_name || 'Global Tech Partner',
           logoUrl: item.company_logo || null,
           title: item.title,
-          location: item.location || 'Remote',
-          experienceLevel: item.tags?.includes('Entry Level') ? 'Fresher (0-2 Yrs)' : 'Entry Level / Fresher',
+          location: item.location || 'Düsseldorf, Germany (Worldwide)',
           postedDate: new Date(item.created_at * 1000 || Date.now()),
           applyUrl: item.url,
-          source: 'Arbeitnow Free API'
+          source: 'Arbeitnow Free API',
+          tags: Array.isArray(item.tags) ? item.tags : []
         });
       });
 

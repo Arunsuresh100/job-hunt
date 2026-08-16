@@ -20,6 +20,7 @@ const getJobs = async (req, res) => {
       district = '',
       keralaOnly = 'false',
       fresherOnly = 'true',
+      expLevel = 'ALL',
       showArchived = 'false'
     } = req.query;
 
@@ -44,8 +45,8 @@ const getJobs = async (req, res) => {
       where.companyType = companyType;
     }
 
-    // Country / India-Only Filter
-    if (indiaOnly === 'true' || country === 'India') {
+    // Country / India-Only Filter (Default to India unless explicitly requesting Worldwide)
+    if (indiaOnly === 'true' || country === 'India' || (indiaOnly !== 'false' && !country)) {
       where.country = 'India';
     }
 
@@ -79,14 +80,37 @@ const getJobs = async (req, res) => {
       });
     }
 
-    // Fresher Only Filter (Default ON)
-    if (fresherOnly === 'true') {
+    // Specific Experience Level Filter (FRESHER vs ONE_YEAR)
+    if (expLevel === 'FRESHER') {
+      andConditions.push({
+        OR: [
+          { experienceLevel: { contains: 'Entry' } },
+          { experienceLevel: { contains: 'Trainee' } },
+          { experienceLevel: { contains: '0 Yrs' } },
+          { experienceLevel: { contains: 'Fresher' } }
+        ]
+      });
+    } else if (expLevel === 'ONE_YEAR') {
+      andConditions.push({
+        OR: [
+          { experienceLevel: { contains: '0-1' } },
+          { experienceLevel: { contains: '0-2' } },
+          { experienceLevel: { contains: '1 Yr' } },
+          { experienceLevel: { contains: 'Fresher' } }
+        ]
+      });
+    } else if (fresherOnly === 'true') {
       andConditions.push({
         OR: [
           { experienceLevel: { contains: 'Fresher' } },
           { experienceLevel: { contains: '0-1' } },
           { experienceLevel: { contains: '0-2' } },
-          { experienceLevel: { contains: 'Entry' } }
+          { experienceLevel: { contains: 'Entry' } },
+          { experienceLevel: { contains: 'Trainee' } }
+        ],
+        NOT: [
+          { experienceLevel: { contains: 'Senior' } },
+          { experienceLevel: { contains: 'Experienced' } }
         ]
       });
     }

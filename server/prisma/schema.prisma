@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -41,6 +41,9 @@ model Exam {
   name                 String
   conductingBody       String
   category             String      @default("Teaching & Lectureship")
+  location             String      @default("Kerala")
+  state                String      @default("Kerala")
+  isKerala             Boolean     @default(true)
   notificationDate     DateTime
   applicationStartDate DateTime
   applicationEndDate   DateTime
@@ -52,6 +55,7 @@ model Exam {
   savedItems           SavedItem[]
 
   @@index([applicationEndDate])
+  @@index([isKerala])
 }
 
 model SavedItem {

@@ -8,6 +8,7 @@ import Exams from './pages/Exams';
 import Saved from './pages/Saved';
 import SyncModal from './components/SyncModal';
 import AppLoadingScreen from './components/AppLoadingScreen';
+import OnboardingModal from './components/OnboardingModal';
 import { fetchSavedItems, syncJobs } from './api/client';
 
 function App() {
@@ -21,6 +22,17 @@ function App() {
 
   const [isAppLoading, setIsAppLoading] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
+
+  // User Profile State & Onboarding Modal
+  const [userProfile, setUserProfile] = useState(() => {
+    try {
+      const saved = localStorage.getItem('jobhunt_user_profile');
+      return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      return null;
+    }
+  });
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
 
   const updateSavedCount = async () => {
     try {
@@ -40,6 +52,10 @@ function App() {
     }, 900);
     const removeTimer = setTimeout(() => {
       setIsAppLoading(false);
+      // Auto open onboarding modal if first time visit
+      if (!userProfile) {
+        setIsOnboardingOpen(true);
+      }
     }, 1350);
     return () => {
       clearTimeout(fadeTimer);
@@ -99,6 +115,16 @@ function App() {
           savedCount={savedCount}
           onSync={handleGlobalSync}
           isSyncing={isSyncing}
+          userProfile={userProfile}
+          onOpenProfileModal={() => setIsOnboardingOpen(true)}
+        />
+
+        {/* Onboarding & Profile Modal */}
+        <OnboardingModal
+          isOpen={isOnboardingOpen}
+          onClose={() => setIsOnboardingOpen(false)}
+          onSaveProfile={(profile) => setUserProfile(profile)}
+          initialProfile={userProfile}
         />
 
         {/* Sync Progress & Action UI Modal */}
@@ -116,8 +142,8 @@ function App() {
 
           <Routes>
             <Route path="/" element={<Navigate to="/jobs" replace />} />
-            <Route path="/jobs" element={<Jobs key={syncVersion} onUpdateSavedCount={updateSavedCount} />} />
-            <Route path="/kerala-jobs" element={<KeralaJobs key={syncVersion} onUpdateSavedCount={updateSavedCount} />} />
+            <Route path="/jobs" element={<Jobs key={syncVersion} userProfile={userProfile} onUpdateSavedCount={updateSavedCount} />} />
+            <Route path="/kerala-jobs" element={<KeralaJobs key={syncVersion} userProfile={userProfile} onUpdateSavedCount={updateSavedCount} />} />
             <Route path="/exams" element={<Exams key={syncVersion} onUpdateSavedCount={updateSavedCount} />} />
             <Route path="/saved" element={<Saved key={syncVersion} onUpdateSavedCount={updateSavedCount} />} />
             <Route path="*" element={<Navigate to="/jobs" replace />} />

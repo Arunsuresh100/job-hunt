@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Briefcase, GraduationCap, Bookmark, RefreshCw, MapPin } from 'lucide-react';
 
-const Header = ({ savedCount = 0, onSync, isSyncing = false }) => {
+const Header = ({ savedCount = 0, onSync, isSyncing = false, userProfile = null, onOpenProfileModal }) => {
   const location = useLocation();
 
   const isActive = (path) => location.pathname === path;
@@ -31,9 +31,6 @@ const Header = ({ savedCount = 0, onSync, isSyncing = false }) => {
             <div className="flex flex-col">
               <span className="text-sm sm:text-base font-black tracking-tight text-white group-hover:text-zinc-200 transition-colors leading-none">
                 JobHunt
-              </span>
-              <span className="text-[10px] text-zinc-400 font-mono tracking-wide mt-0.5">
-                Tracker Portal
               </span>
             </div>
           </Link>
@@ -71,17 +68,30 @@ const Header = ({ savedCount = 0, onSync, isSyncing = false }) => {
             })}
           </nav>
 
-          {/* Sync Button - Right Side (Visible on Mobile & Desktop) */}
+          {/* Right Side Tools: Sync & Profile Avatar */}
           <div className="flex items-center space-x-2">
             <button
               type="button"
               onClick={onSync}
               disabled={isSyncing}
-              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-black font-extrabold text-xs transition-all active:scale-95 disabled:opacity-60 shadow-md shadow-emerald-500/20 outline-none focus:outline-none focus-visible:outline-none select-none [-webkit-tap-highlight-color:transparent]"
-              title="Sync Live Feeds"
+              className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-white transition-all active:scale-95 disabled:opacity-60 shadow-md outline-none focus:outline-none flex items-center justify-center"
+              title={isSyncing ? "Syncing Feeds..." : "Sync Live Feeds"}
             >
-              <RefreshCw className={`w-3.5 h-3.5 text-black ${isSyncing ? 'animate-spin' : ''}`} />
-              <span className="capitalize tracking-tight">{isSyncing ? 'Syncing...' : 'Sync'}</span>
+              <RefreshCw className={`w-4 h-4 text-white ${isSyncing ? 'animate-spin' : ''}`} />
+            </button>
+
+            {/* Profile Avatar Button (Circular Icon Button matching Sync button size & padding) */}
+            <button
+              type="button"
+              onClick={onOpenProfileModal}
+              className="p-1 rounded-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-white transition-all active:scale-95 shadow-md outline-none focus:outline-none flex items-center justify-center"
+              title={userProfile?.fullName ? `Edit Profile (${userProfile.fullName})` : 'Edit Candidate Profile'}
+            >
+              <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-extrabold text-xs flex items-center justify-center">
+                {userProfile?.fullName
+                  ? userProfile.fullName.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
+                  : 'A'}
+              </div>
             </button>
           </div>
 

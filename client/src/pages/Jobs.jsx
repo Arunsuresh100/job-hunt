@@ -4,7 +4,17 @@ import { fetchJobs, toggleSaveItem, syncJobs } from '../api/client';
 import JobCard from '../components/JobCard';
 import FilterBar from '../components/FilterBar';
 
-const Jobs = ({ onUpdateSavedCount }) => {
+const getShortDegree = (deg = '') => {
+  if (!deg) return 'Fresher';
+  if (deg.includes('MCA')) return 'MCA';
+  if (deg.includes('B.Tech') || deg.includes('B.E.')) return 'B.Tech';
+  if (deg.includes('BCA')) return 'BCA';
+  if (deg.includes('M.Tech')) return 'M.Tech';
+  if (deg.includes('B.Sc')) return 'B.Sc CS';
+  return deg.split(' ')[0] || 'Fresher';
+};
+
+const Jobs = ({ onUpdateSavedCount, userProfile = null }) => {
   const [jobs, setJobs] = useState([]);
   const [pagination, setPagination] = useState({ page: 1, limit: 20, totalPages: 1, total: 0 });
   const [availableCompanies, setAvailableCompanies] = useState([]);
@@ -16,6 +26,7 @@ const Jobs = ({ onUpdateSavedCount }) => {
   const [companyType, setCompanyType] = useState('ALL');
   const [indiaOnly, setIndiaOnly] = useState(true);
   const [fresherOnly, setFresherOnly] = useState(true);
+  const [expLevel, setExpLevel] = useState('ALL');
   const [showArchived, setShowArchived] = useState(false);
   const [page, setPage] = useState(1);
 
@@ -30,6 +41,7 @@ const Jobs = ({ onUpdateSavedCount }) => {
         companyType,
         indiaOnly: indiaOnly ? 'true' : 'false',
         fresherOnly: fresherOnly ? 'true' : 'false',
+        expLevel,
         showArchived: showArchived ? 'true' : 'false'
       });
 
@@ -49,14 +61,15 @@ const Jobs = ({ onUpdateSavedCount }) => {
 
   useEffect(() => {
     loadJobs();
-  }, [page, search, selectedCompany, companyType, indiaOnly, fresherOnly, showArchived]);
+  }, [page, search, selectedCompany, companyType, indiaOnly, fresherOnly, expLevel, showArchived]);
 
   const handleReset = () => {
     setSearch('');
     setSelectedCompany('');
     setCompanyType('ALL');
-    setIndiaOnly(false);
+    setIndiaOnly(true);
     setFresherOnly(true);
+    setExpLevel('ALL');
     setShowArchived(false);
     setPage(1);
   };
@@ -64,20 +77,23 @@ const Jobs = ({ onUpdateSavedCount }) => {
   const handleToggleSave = async (itemType, itemId) => {
     try {
       await toggleSaveItem(itemType, itemId);
-      loadJobs();
+      setJobs(prevJobs =>
+        prevJobs.map(j => (j.id === itemId ? { ...j, isSaved: !j.isSaved } : j))
+      );
       if (onUpdateSavedCount) onUpdateSavedCount();
     } catch (err) {
-      console.error('Error toggling save:', err);
+      console.error('Failed to toggle save:', err);
     }
   };
 
-  const handleManualSync = async () => {
+  const handleSyncNow = async () => {
     try {
       setSyncing(true);
       await syncJobs();
       await loadJobs();
+      if (onUpdateSavedCount) onUpdateSavedCount();
     } catch (err) {
-      console.error('Error syncing jobs:', err);
+      console.error('Sync failed:', err);
     } finally {
       setSyncing(false);
     }
@@ -86,25 +102,27 @@ const Jobs = ({ onUpdateSavedCount }) => {
   return (
     <div className="space-y-6">
       
-      {/* Header Banner with User 3D Isometric Illustration */}
-      <div className="mono-panel p-5 sm:p-7 rounded-2xl border border-zinc-800 flex items-center justify-between gap-4 overflow-hidden relative min-h-[140px] sm:min-h-[170px]">
-        <div className="flex-1 min-w-0 pr-2 z-10">
-          <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
-            Latest Entry-Level Jobs
+      {/* Premium Hero Banner */}
+      <div className="relative rounded-2xl bg-gradient-to-br from-zinc-900 via-zinc-950 to-emerald-950/40 border border-white/20 p-5 sm:p-6 flex items-center justify-between gap-4 overflow-hidden shadow-xl">
+        <div className="flex-1 min-w-0 z-10">
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight leading-tight bg-gradient-to-r from-white via-zinc-100 to-emerald-400 bg-clip-text text-transparent">
+            {userProfile?.fullName ? `Welcome, ${userProfile.fullName.split(' ')[0]}!` : 'Welcome Candidate!'}
           </h1>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-1.5 leading-relaxed max-w-[210px] sm:max-w-md">
-            Curated MCA & fresher job drives<br className="sm:hidden" /> updated in real-time.
+          <p className="text-xs sm:text-sm text-zinc-400 mt-1 leading-normal max-w-full sm:max-w-xl font-medium">
+            {userProfile?.highestEducation
+              ? `Curated fresher IT drives for ${getShortDegree(userProfile.highestEducation)} ${userProfile.yearOfPassing || '2026'} graduates.`
+              : 'Curated fresher IT job drives across India.'}
           </p>
         </div>
 
-        {/* User High-Resolution Large 3D Isometric Job Hunt Illustration on Right Side */}
+        {/* Compact 3D Isometric Illustration */}
         <div className="flex-shrink-0 flex items-center justify-end z-10">
           <div className="relative group">
-            <div className="absolute -inset-2 bg-gradient-to-r from-emerald-500/25 to-indigo-500/25 rounded-3xl blur-md group-hover:blur-lg transition-all" />
+            <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-indigo-500/20 rounded-2xl blur-sm group-hover:blur-md transition-all" />
             <img
               src="/jobs_illustration.png"
               alt="3D Job Hunt Illustration"
-              className="relative w-32 h-32 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain drop-shadow-2xl transform group-hover:scale-105 transition-transform duration-300 -my-4 sm:-my-6"
+              className="relative w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 object-contain drop-shadow-xl transform group-hover:scale-105 transition-transform duration-300"
             />
           </div>
         </div>
@@ -119,12 +137,10 @@ const Jobs = ({ onUpdateSavedCount }) => {
         companiesList={availableCompanies}
         companyType={companyType}
         setCompanyType={(val) => { setCompanyType(val); setPage(1); }}
-        indiaOnly={indiaOnly}
-        setIndiaOnly={(val) => { setIndiaOnly(val); setPage(1); }}
         fresherOnly={fresherOnly}
         setFresherOnly={(val) => { setFresherOnly(val); setPage(1); }}
-        showArchived={showArchived}
-        setShowArchived={(val) => { setShowArchived(val); setPage(1); }}
+        expLevel={expLevel}
+        setExpLevel={(val) => { setExpLevel(val); setPage(1); }}
         onReset={handleReset}
       />
 
@@ -182,7 +198,7 @@ const Jobs = ({ onUpdateSavedCount }) => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {jobs.map(job => (
-            <JobCard key={job.id} job={job} onToggleSave={handleToggleSave} />
+            <JobCard key={job.id} job={job} onToggleSave={handleToggleSave} userProfile={userProfile} />
           ))}
         </div>
       )}

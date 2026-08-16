@@ -1,5 +1,7 @@
 const { classifyCompany } = require('../utils/companyClassifier');
 const { classifyLocation } = require('../utils/locationClassifier');
+const { classifyRole } = require('../utils/roleClassifier');
+const { resolveCompanyLogo } = require('../utils/logoResolver');
 
 /**
  * Abstract Base Class for Job Source Adapters
@@ -29,14 +31,15 @@ class BaseAdapter {
     logoUrl = null,
     title,
     location = "Remote / India",
-    experienceLevel = "Fresher (0-2 Yrs)",
+    experienceLevel = null,
     companyType = null,
     country = null,
     state = null,
     district = null,
     postedDate = new Date(),
     applyUrl,
-    source = this.name
+    source = this.name,
+    tags = []
   }) {
     const cleanCompany = company ? company.trim() : "Tech Enterprise";
     const cleanTitle = title ? title.trim() : "Software Engineer";
@@ -44,25 +47,33 @@ class BaseAdapter {
 
     const determinedType = companyType || classifyCompany(cleanCompany);
     const locMeta = classifyLocation(cleanLocation, cleanTitle);
+    const roleMeta = classifyRole(cleanTitle, tags);
+    const resolvedLogo = resolveCompanyLogo(cleanCompany, applyUrl, logoUrl);
+
+    // If caller provided experienceLevel explicitly as Senior/Fresher, respect it, otherwise fallback to roleMeta
+    const finalExperience = experienceLevel && experienceLevel !== "Fresher (0-2 Yrs)" && experienceLevel !== "Entry Level / Fresher" 
+      ? experienceLevel 
+      : roleMeta.experienceLevel;
 
     return {
       externalId: externalId ? String(externalId) : `${this.name.toLowerCase()}-${cleanTitle.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`,
       company: cleanCompany,
-      logoUrl: logoUrl && typeof logoUrl === 'string' && logoUrl.startsWith('http')
-        ? logoUrl
-        : `https://ui-avatars.com/api/?name=${encodeURIComponent(cleanCompany)}&background=6366f1&color=fff`,
+      logoUrl: resolvedLogo,
       title: cleanTitle,
       location: cleanLocation,
-      experienceLevel: experienceLevel || "Fresher (0-2 Yrs)",
+      experienceLevel: finalExperience,
       companyType: determinedType,
       country: country || locMeta.country,
       state: state || locMeta.state,
       district: district || locMeta.district,
       postedDate: postedDate instanceof Date && !isNaN(postedDate) ? postedDate : new Date(),
       applyUrl: applyUrl || "https://google.com",
-      source: source || this.name
+      source: source || this.name,
+      isTechRole: roleMeta.isTechRole,
+      isFresherEligible: roleMeta.isFresherEligible
     };
   }
 }
 
 module.exports = BaseAdapter;
+

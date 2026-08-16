@@ -18,7 +18,6 @@ class AdapterManager {
     this.registerAdapter(new IndiaTechAdapter());
     this.registerAdapter(new RemotiveAdapter());
     this.registerAdapter(new JobicyAdapter());
-    this.registerAdapter(new ArbeitnowAdapter());
     this.registerAdapter(new AdzunaAdapter());
     this.registerAdapter(new JSearchAdapter());
   }
@@ -69,7 +68,8 @@ class AdapterManager {
                 applyUrl: job.applyUrl,
                 logoUrl: job.logoUrl || existing.logoUrl,
                 companyType: job.companyType || 'Product',
-                country: job.country || 'India',
+                country: job.country || 'Worldwide',
+                experienceLevel: job.experienceLevel,
                 state: job.state || null,
                 district: job.district || null,
                 isArchived: isOlderThan7Days
@@ -86,7 +86,7 @@ class AdapterManager {
                 location: job.location,
                 experienceLevel: job.experienceLevel,
                 companyType: job.companyType || 'Product',
-                country: job.country || 'India',
+                country: job.country || 'Worldwide',
                 state: job.state || null,
                 district: job.district || null,
                 postedDate: job.postedDate,
@@ -111,6 +111,9 @@ class AdapterManager {
       }
     }
 
+    // Sanitize and reclassify all existing jobs in DB with current classifiers
+    await this.reclassifyExistingJobs();
+
     // Auto-Archive step: Mark any job in DB older than 7 days as archived
     const archiveResult = await this.autoArchiveOlderJobs();
 
@@ -123,6 +126,30 @@ class AdapterManager {
       errors,
       syncedAt: new Date()
     };
+  }
+
+  /**
+   * Re-evaluates country, state, district, and experienceLevel for all existing DB rows
+   */
+  async reclassifyExistingJobs() {
+    const { classifyLocation } = require('../utils/locationClassifier');
+    const { classifyRole } = require('../utils/roleClassifier');
+
+    const allJobs = await prisma.job.findMany();
+    for (const job of allJobs) {
+      const locMeta = classifyLocation(job.location, job.title);
+      const roleMeta = classifyRole(job.title);
+
+      await prisma.job.update({
+        where: { id: job.id },
+        data: {
+          country: locMeta.country,
+          state: locMeta.state,
+          district: locMeta.district,
+          experienceLevel: roleMeta.experienceLevel
+        }
+      });
+    }
   }
 
   /**

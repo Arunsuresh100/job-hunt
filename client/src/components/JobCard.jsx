@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { MapPin, Calendar, ExternalLink, Bookmark, Clock, Check, Box, Layers, Rocket } from 'lucide-react';
+import React from 'react';
+import { MapPin, Calendar, ExternalLink, Bookmark, Clock, Check, Box, Layers, Rocket, Sparkles } from 'lucide-react';
+import CompanyLogo from './CompanyLogo';
 
 const capitalizeText = (str) => {
   if (!str) return '';
@@ -13,34 +14,7 @@ const capitalizeText = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const getCompanyGradient = (name = '') => {
-  const gradients = [
-    'from-indigo-600 to-violet-700 text-white',
-    'from-blue-600 to-cyan-700 text-white',
-    'from-emerald-600 to-teal-700 text-white',
-    'from-purple-600 to-pink-700 text-white',
-    'from-amber-600 to-orange-700 text-white',
-    'from-rose-600 to-red-700 text-white',
-  ];
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return gradients[Math.abs(hash) % gradients.length];
-};
-
-const getInitials = (name = '') => {
-  if (!name) return 'CO';
-  const parts = name.trim().split(/\s+/);
-  if (parts.length >= 2) {
-    return (parts[0][0] + parts[1][0]).toUpperCase();
-  }
-  return name.slice(0, 2).toUpperCase();
-};
-
-const JobCard = ({ job, onToggleSave, variant = 'default' }) => {
-  const [imgError, setImgError] = useState(false);
-
+const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null }) => {
   const {
     id,
     company,
@@ -59,6 +33,15 @@ const JobCard = ({ job, onToggleSave, variant = 'default' }) => {
 
   const isFresh = daysAgo <= 7 && !isArchived;
 
+  // Calculate Match Score % based on User Profile
+  const userSkills = userProfile?.skills || [];
+  let matchScore = 0;
+  if (userSkills.length > 0) {
+    const text = `${title} ${company} ${location}`.toLowerCase();
+    const count = userSkills.filter(s => text.includes(s.toLowerCase())).length;
+    matchScore = Math.min(98, 75 + count * 8);
+  }
+
   // Saved page card variant option if needed
   if (variant === 'saved') {
     return (
@@ -70,24 +53,7 @@ const JobCard = ({ job, onToggleSave, variant = 'default' }) => {
         <div>
           <div className="flex items-start justify-between gap-3 mb-3">
             <div className="flex items-center space-x-3 min-w-0">
-              <div className="w-10 h-10 rounded-xl bg-zinc-950 border border-zinc-800 p-1 flex items-center justify-center overflow-hidden flex-shrink-0 relative group-hover:border-zinc-700 transition-colors shadow-inner">
-                {logoUrl && !imgError ? (
-                  <img
-                    src={logoUrl}
-                    alt={company}
-                    className="w-full h-full object-contain"
-                    onError={() => setImgError(true)}
-                  />
-                ) : (
-                  <div
-                    className={`w-full h-full rounded-lg bg-gradient-to-br ${getCompanyGradient(
-                      company
-                    )} flex items-center justify-center font-bold text-xs shadow-inner`}
-                  >
-                    {getInitials(company)}
-                  </div>
-                )}
-              </div>
+              <CompanyLogo logoUrl={logoUrl} company={company} applyUrl={applyUrl} className="w-10 h-10" />
 
               <div className="min-w-0 flex-1">
                 <div className="flex items-center space-x-2">
@@ -118,15 +84,16 @@ const JobCard = ({ job, onToggleSave, variant = 'default' }) => {
             </button>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 my-3">
-            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-[11px] font-medium bg-zinc-950 text-zinc-300 border border-zinc-800/80 capitalize">
+          {/* Row 1 Badges: Experience Level & Company Type */}
+          <div className="flex flex-wrap items-center gap-2 mt-3 mb-2">
+            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-950 text-zinc-300 border border-zinc-800/80 capitalize">
               <Check className="w-3 h-3 text-indigo-400" />
               <span>{experienceLevel}</span>
             </span>
 
             {companyType && (
               <span
-                className={`inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold border ${
+                className={`inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold border ${
                   companyType === 'Startup'
                     ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30'
                     : companyType === 'Service'
@@ -144,21 +111,24 @@ const JobCard = ({ job, onToggleSave, variant = 'default' }) => {
                 <span>{companyType === 'Startup' ? 'Startup' : `${companyType} Based`}</span>
               </span>
             )}
+          </div>
 
-            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-[11px] font-medium bg-zinc-950 text-zinc-400 border border-zinc-800/80 capitalize">
-              <MapPin className="w-3 h-3 text-zinc-500" />
-              <span>{location}</span>
+          {/* Row 2 Badges: Location (Truncated) & Days Ago */}
+          <div className="flex items-center gap-2 mb-3 min-w-0">
+            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-950 text-zinc-400 border border-zinc-800/80 capitalize min-w-0 flex-1">
+              <MapPin className="w-3 h-3 text-zinc-500 flex-shrink-0" />
+              <span className="truncate">{location}</span>
             </span>
 
             {isFresh ? (
-              <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 capitalize">
-                <Clock className="w-3 h-3 text-indigo-400" />
-                <span>{daysAgo === 0 ? 'Today' : `${daysAgo}d Ago`}</span>
+              <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 capitalize flex-shrink-0">
+                <Clock className="w-3 h-3 text-indigo-400 flex-shrink-0" />
+                <span className="whitespace-nowrap">{daysAgo === 0 ? 'Today' : `${daysAgo}d ago`}</span>
               </span>
             ) : (
-              <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-[11px] font-mono text-zinc-400 bg-zinc-950 border border-zinc-800/80 capitalize">
-                <Clock className="w-3 h-3 text-zinc-500" />
-                <span>{daysAgo}d Ago (Archived)</span>
+              <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-mono text-zinc-400 bg-zinc-950 border border-zinc-800/80 capitalize flex-shrink-0">
+                <Clock className="w-3 h-3 text-zinc-500 flex-shrink-0" />
+                <span className="whitespace-nowrap">{daysAgo}d ago</span>
               </span>
             )}
           </div>
@@ -190,7 +160,7 @@ const JobCard = ({ job, onToggleSave, variant = 'default' }) => {
     );
   }
 
-  // Original Old Design for Job Page
+  // Standard Job Card Design
   return (
     <div
       className={`mono-card p-5 rounded-xl flex flex-col justify-between relative group ${
@@ -200,32 +170,15 @@ const JobCard = ({ job, onToggleSave, variant = 'default' }) => {
       {/* Top Header Row */}
       <div>
         <div className="flex items-start justify-between gap-3 mb-3">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 p-1 flex items-center justify-center overflow-hidden flex-shrink-0 relative group-hover:border-zinc-700 transition-colors">
-              {logoUrl && !imgError ? (
-                <img
-                  src={logoUrl}
-                  alt={company}
-                  className="w-full h-full object-contain"
-                  onError={() => setImgError(true)}
-                />
-              ) : (
-                <div
-                  className={`w-full h-full rounded-lg bg-gradient-to-br ${getCompanyGradient(
-                    company
-                  )} flex items-center justify-center font-bold text-xs shadow-inner`}
-                >
-                  {getInitials(company)}
-                </div>
-              )}
-            </div>
+          <div className="flex items-center space-x-3 min-w-0">
+            <CompanyLogo logoUrl={logoUrl} company={company} applyUrl={applyUrl} className="w-10 h-10" />
 
-            <div>
+            <div className="min-w-0 flex-1">
               <div className="flex items-center space-x-2">
-                <span className="text-xs font-semibold tracking-wide text-zinc-300">
+                <span className="text-xs font-semibold tracking-wide text-zinc-300 truncate">
                   {capitalizeText(company)}
                 </span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded bg-zinc-900 text-zinc-500 font-mono border border-zinc-800">
+                <span className="text-[10px] px-1.5 py-0.2 rounded bg-zinc-900 text-zinc-500 font-mono border border-zinc-800 flex-shrink-0">
                   {source || 'Feed'}
                 </span>
               </div>
@@ -237,8 +190,9 @@ const JobCard = ({ job, onToggleSave, variant = 'default' }) => {
 
           {/* Bookmark Button */}
           <button
+            type="button"
             onClick={() => onToggleSave && onToggleSave('JOB', id)}
-            className={`p-1.5 rounded-lg border transition-all ${
+            className={`p-1.5 rounded-lg border transition-all flex-shrink-0 ${
               isSaved
                 ? 'bg-white text-black border-white'
                 : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:text-white hover:border-zinc-700'
@@ -249,16 +203,16 @@ const JobCard = ({ job, onToggleSave, variant = 'default' }) => {
           </button>
         </div>
 
-        {/* Badges Row */}
-        <div className="flex flex-wrap items-center gap-2 my-3">
-          <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded text-xs font-medium bg-zinc-900 text-zinc-300 border border-zinc-800">
+        {/* Row 1 Badges: Experience Level & Company Type */}
+        <div className="flex flex-wrap items-center gap-2 mt-3 mb-2">
+          <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-900 text-zinc-300 border border-zinc-800">
             <Check className="w-3 h-3 text-white" />
             <span>{experienceLevel}</span>
           </span>
 
           {companyType && (
             <span
-              className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded text-xs font-semibold border ${
+              className={`inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold border ${
                 companyType === 'Startup'
                   ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30'
                   : companyType === 'Service'
@@ -276,21 +230,24 @@ const JobCard = ({ job, onToggleSave, variant = 'default' }) => {
               <span>{companyType === 'Startup' ? 'Startup' : `${companyType} Based`}</span>
             </span>
           )}
+        </div>
 
-          <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded text-xs font-medium bg-zinc-900 text-zinc-400 border border-zinc-800">
-            <MapPin className="w-3 h-3 text-zinc-500" />
-            <span>{location}</span>
+        {/* Row 2 Badges: Location (Truncated) & Days Ago */}
+        <div className="flex items-center gap-2 mb-3 min-w-0">
+          <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-900 text-zinc-400 border border-zinc-800 min-w-0 flex-1">
+            <MapPin className="w-3 h-3 text-zinc-500 flex-shrink-0" />
+            <span className="truncate">{location}</span>
           </span>
 
           {isFresh ? (
-            <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-white text-black">
-              <Clock className="w-3 h-3 text-black" />
-              <span>{daysAgo === 0 ? 'Today' : `${daysAgo}d ago`}</span>
+            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-white text-black flex-shrink-0">
+              <Clock className="w-3 h-3 text-black flex-shrink-0" />
+              <span className="whitespace-nowrap">{daysAgo === 0 ? 'Today' : `${daysAgo}d ago`}</span>
             </span>
           ) : (
-            <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded text-xs font-mono text-zinc-400 bg-zinc-900 border border-zinc-800">
-              <Clock className="w-3 h-3 text-zinc-500" />
-              <span>{daysAgo}d ago (Archived)</span>
+            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-mono text-zinc-400 bg-zinc-900 border border-zinc-800 flex-shrink-0">
+              <Clock className="w-3 h-3 text-zinc-500 flex-shrink-0" />
+              <span className="whitespace-nowrap">{daysAgo}d ago</span>
             </span>
           )}
         </div>
@@ -313,7 +270,7 @@ const JobCard = ({ job, onToggleSave, variant = 'default' }) => {
           href={applyUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-zinc-200 text-black font-semibold text-xs transition-all"
+          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-zinc-200 text-black font-semibold text-xs transition-all active:scale-95"
         >
           <span>Apply Official Site</span>
           <ExternalLink className="w-3 h-3" />
@@ -324,5 +281,3 @@ const JobCard = ({ job, onToggleSave, variant = 'default' }) => {
 };
 
 export default JobCard;
-
-
