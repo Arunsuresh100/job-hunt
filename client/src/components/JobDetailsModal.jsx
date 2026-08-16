@@ -112,11 +112,11 @@ const JobDetailsModal = ({ job, isOpen, onClose, onToggleSave, userProfile }) =>
             <X className="w-4 h-4" />
           </button>
 
-          <div className="flex items-start space-x-3.5">
+          <div className="flex items-center space-x-3.5">
             <CompanyLogo logoUrl={logoUrl} company={company} applyUrl={applyUrl} className="w-11 h-11 sm:w-14 sm:h-14 rounded-2xl flex-shrink-0" />
             <div className="min-w-0 flex-1 space-y-1">
               <div className="flex flex-wrap items-center gap-1.5">
-                <span className="text-xs font-bold text-emerald-400 tracking-wide truncate">
+                <span className="text-xs sm:text-sm font-bold text-emerald-400 tracking-wide truncate">
                   {capitalizeCompanyText(company)}
                 </span>
                 <span className="px-2 py-0.5 rounded-md text-[10px] font-mono bg-zinc-900 text-zinc-300 border border-zinc-800 flex items-center space-x-1 flex-shrink-0">
@@ -124,11 +124,14 @@ const JobDetailsModal = ({ job, isOpen, onClose, onToggleSave, userProfile }) =>
                   <span>{source || 'Verified Source'}</span>
                 </span>
               </div>
-
-              <h2 className="text-base sm:text-xl font-black text-white leading-tight">
-                {title}
-              </h2>
             </div>
+          </div>
+
+          {/* Full Width Left-Aligned Job Title */}
+          <div className="mt-3.5 w-full">
+            <h2 className="text-base sm:text-2xl font-black text-white leading-snug tracking-tight text-left">
+              {title}
+            </h2>
           </div>
 
           {/* Quick Info Badges Row */}
