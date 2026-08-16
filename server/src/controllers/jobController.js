@@ -21,7 +21,9 @@ const getJobs = async (req, res) => {
       keralaOnly = 'false',
       fresherOnly = 'true',
       expLevel = 'ALL',
-      showArchived = 'false'
+      showArchived = 'false',
+      sourceType = 'ALL', // 'CAREER' (official company pages), 'PORTAL' (LinkedIn, Naukri, etc.), or 'ALL'
+      source = ''
     } = req.query;
 
     const pageNum = parseInt(page, 10) || 1;
@@ -35,12 +37,17 @@ const getJobs = async (req, res) => {
       where.isArchived = false;
     }
 
+    // Specific Source Filter (e.g. LinkedIn, Naukri, FoundIt)
+    if (source) {
+      where.source = { contains: source };
+    }
+
     // Company Filter
     if (company) {
       where.company = { contains: company };
     }
 
-    // Company Type Filter (Product vs Service)
+    // Company Type Filter (Product vs Service vs Startup)
     if (companyType && companyType !== 'ALL') {
       where.companyType = companyType;
     }
@@ -68,6 +75,39 @@ const getJobs = async (req, res) => {
     }
 
     const andConditions = [];
+
+    // Source Type Filter (CAREER vs PORTAL)
+    if (sourceType === 'CAREER') {
+      // Exclude aggregator portals from main Jobs page
+      andConditions.push({
+        NOT: [
+          { source: { contains: 'LinkedIn' } },
+          { source: { contains: 'Naukri' } },
+          { source: { contains: 'FoundIt' } },
+          { source: { contains: 'Indeed' } },
+          { source: { contains: 'Monster' } },
+          { source: { contains: 'Jobicy' } },
+          { source: { contains: 'Remotive' } },
+          { source: { contains: 'Adzuna' } },
+          { source: { contains: 'JSearch' } }
+        ]
+      });
+    } else if (sourceType === 'PORTAL') {
+      // Include ONLY aggregator portal jobs on Portals page
+      andConditions.push({
+        OR: [
+          { source: { contains: 'LinkedIn' } },
+          { source: { contains: 'Naukri' } },
+          { source: { contains: 'FoundIt' } },
+          { source: { contains: 'Indeed' } },
+          { source: { contains: 'Monster' } },
+          { source: { contains: 'Jobicy' } },
+          { source: { contains: 'Remotive' } },
+          { source: { contains: 'Adzuna' } },
+          { source: { contains: 'JSearch' } }
+        ]
+      });
+    }
 
     // Keyword Search
     if (search) {

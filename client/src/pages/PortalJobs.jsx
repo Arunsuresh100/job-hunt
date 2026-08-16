@@ -42,6 +42,8 @@ const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
         search,
         companyType,
         source: portalSource,
+        sourceType: 'PORTAL',
+        limit: 50,
       });
 
       if (data.success) {

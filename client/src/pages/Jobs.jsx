@@ -42,7 +42,8 @@ const Jobs = ({ onUpdateSavedCount, userProfile = null }) => {
         indiaOnly: indiaOnly ? 'true' : 'false',
         fresherOnly: fresherOnly ? 'true' : 'false',
         expLevel,
-        showArchived: showArchived ? 'true' : 'false'
+        showArchived: showArchived ? 'true' : 'false',
+        sourceType: 'CAREER',
       });
 
       if (data.success) {
