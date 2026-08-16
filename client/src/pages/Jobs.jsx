@@ -46,8 +46,28 @@ const Jobs = ({ onUpdateSavedCount, userProfile = null }) => {
       });
 
       if (data.success) {
-        setJobs(data.jobs);
-        setPagination(data.pagination);
+        const isExternalPortal = (source = '') => {
+          const s = (source || '').toLowerCase();
+          return (
+            s.includes('linkedin') ||
+            s.includes('naukri') ||
+            s.includes('foundit') ||
+            s.includes('indeed') ||
+            s.includes('monster') ||
+            s.includes('jobicy') ||
+            s.includes('remotive') ||
+            s.includes('adzuna') ||
+            s.includes('jsearch')
+          );
+        };
+
+        // Official Company Career Pages only (Google Careers, IBM Careers, Infopark, Technopark, etc.)
+        const officialCareerJobs = (data.jobs || []).filter((j) => !isExternalPortal(j.sourceName));
+        setJobs(officialCareerJobs);
+        setPagination({
+          ...data.pagination,
+          total: officialCareerJobs.length,
+        });
         if (data.filters?.availableCompanies) {
           setAvailableCompanies(data.filters.availableCompanies);
         }

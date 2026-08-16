@@ -52,7 +52,7 @@ const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
             (j) => j.sourceName && j.sourceName.toLowerCase().includes(portalSource.toLowerCase())
           );
         } else {
-          // Show all portal-sourced jobs (LinkedIn, Naukri, FoundIt, Indeed, etc.)
+          // Show all aggregator portal jobs (LinkedIn, Naukri, FoundIt, Indeed, Jobicy, Remotive, Adzuna, JSearch)
           fetched = fetched.filter(
             (j) =>
               j.sourceName &&
@@ -61,7 +61,10 @@ const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
                 j.sourceName.toLowerCase().includes('foundit') ||
                 j.sourceName.toLowerCase().includes('indeed') ||
                 j.sourceName.toLowerCase().includes('monster') ||
-                j.sourceName.toLowerCase().includes('careers'))
+                j.sourceName.toLowerCase().includes('jobicy') ||
+                j.sourceName.toLowerCase().includes('remotive') ||
+                j.sourceName.toLowerCase().includes('adzuna') ||
+                j.sourceName.toLowerCase().includes('jsearch'))
           );
         }
         setJobs(fetched);
