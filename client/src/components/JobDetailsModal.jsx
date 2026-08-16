@@ -16,12 +16,17 @@ import {
 } from 'lucide-react';
 import CompanyLogo from './CompanyLogo';
 
-const capitalizeText = (str) => {
+const capitalizeCompanyText = (str) => {
   if (!str) return '';
   return str
-    .toLowerCase()
     .split(' ')
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .map((w) => {
+      const clean = w.toUpperCase().replace(/[()]/g, '');
+      if (['TCS', 'UST', 'IBM', 'CTS', 'IBS', 'AI', 'IT', 'QA', 'NQT', 'CEE', 'SET', 'KTET', 'SSC', 'CGL', 'CHSL', 'UGC', 'NET', 'JRF', 'PSC'].includes(clean)) {
+        return w;
+      }
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    })
     .join(' ');
 };
 
@@ -112,7 +117,7 @@ const JobDetailsModal = ({ job, isOpen, onClose, onToggleSave, userProfile }) =>
             <div className="min-w-0 flex-1 space-y-1">
               <div className="flex flex-wrap items-center gap-1.5">
                 <span className="text-xs font-bold text-emerald-400 tracking-wide truncate">
-                  {capitalizeText(company)}
+                  {capitalizeCompanyText(company)}
                 </span>
                 <span className="px-2 py-0.5 rounded-md text-[10px] font-mono bg-zinc-900 text-zinc-300 border border-zinc-800 flex items-center space-x-1 flex-shrink-0">
                   <ShieldCheck className="w-3 h-3 text-emerald-400" />
@@ -170,33 +175,33 @@ const JobDetailsModal = ({ job, isOpen, onClose, onToggleSave, userProfile }) =>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 p-3.5 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 text-xs">
             <div>
               <span className="text-[10px] font-semibold text-zinc-400 block tracking-tight">Hiring Company</span>
-              <span className="font-semibold text-white truncate block capitalize">{capitalizeText(company)}</span>
+              <span className="font-semibold text-white truncate block">{capitalizeCompanyText(company)}</span>
             </div>
             <div>
               <span className="text-[10px] font-semibold text-zinc-400 block tracking-tight">Work Location</span>
-              <span className="font-semibold text-white truncate block capitalize">{capitalizeText(location)}</span>
+              <span className="font-semibold text-white truncate block">{capitalizeCompanyText(location)}</span>
             </div>
             <div>
               <span className="text-[10px] font-semibold text-zinc-400 block tracking-tight">Experience Level</span>
-              <span className="font-semibold text-white truncate block capitalize">{capitalizeText(experienceLevel || 'Fresher (0-2 Yrs)')}</span>
+              <span className="font-semibold text-white truncate block">{capitalizeCompanyText(experienceLevel || 'Fresher (0-2 Yrs)')}</span>
             </div>
             <div>
               <span className="text-[10px] font-semibold text-zinc-400 block tracking-tight">Country</span>
-              <span className="font-semibold text-emerald-400 truncate block capitalize">India</span>
+              <span className="font-semibold text-emerald-400 truncate block">India</span>
             </div>
             <div>
               <span className="text-[10px] font-semibold text-zinc-400 block tracking-tight">Posting Source</span>
-              <span className="font-semibold text-white truncate block capitalize">{capitalizeText(source || 'Official Site')}</span>
+              <span className="font-semibold text-white truncate block">{capitalizeCompanyText(source || 'Official Site')}</span>
             </div>
             <div>
               <span className="text-[10px] font-semibold text-zinc-400 block tracking-tight">Posted Date</span>
-              <span className="font-semibold text-white truncate block capitalize">{capitalizeText(relativeTimeLabel)}</span>
+              <span className="font-semibold text-white truncate block">{capitalizeCompanyText(relativeTimeLabel)}</span>
             </div>
           </div>
 
           {/* Detailed Job Description */}
           <div className="space-y-2">
-            <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider flex items-center space-x-2">
+            <h3 className="text-xs sm:text-sm font-bold text-white tracking-wide flex items-center space-x-2">
               <Briefcase className="w-4 h-4 text-emerald-400" />
               <span>Job Role Description & Key Responsibilities</span>
             </h3>
