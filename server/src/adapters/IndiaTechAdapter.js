@@ -27,7 +27,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Ernakulam',
         postedDate: subDays(1),
-        applyUrl: 'https://www.linkedin.com/company/thoughtworks/jobs/',
+        applyUrl: 'https://www.thoughtworks.com/en-in/careers',
         source: 'LinkedIn Jobs'
       },
       {
@@ -42,7 +42,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Ernakulam',
         postedDate: subDays(1),
-        applyUrl: 'https://www.linkedin.com/company/microsoft/jobs/',
+        applyUrl: 'https://careers.microsoft.com/v2/global/en/home.html',
         source: 'LinkedIn Jobs'
       },
       {
@@ -57,7 +57,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Ernakulam',
         postedDate: subDays(1),
-        applyUrl: 'https://www.naukri.com/cognizant-jobs-careers',
+        applyUrl: 'https://careers.cognizant.com/in/en',
         source: 'Naukri.com'
       },
       {
@@ -72,7 +72,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Thiruvananthapuram',
         postedDate: subDays(2),
-        applyUrl: 'https://www.naukri.com/wipro-jobs-careers',
+        applyUrl: 'https://careers.wipro.com/',
         source: 'Naukri.com'
       },
       {
@@ -87,7 +87,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Karnataka',
         district: 'Bengaluru',
         postedDate: subDays(1),
-        applyUrl: 'https://www.linkedin.com/company/amazon/jobs/',
+        applyUrl: 'https://www.amazon.jobs/en/locations/bangalore-india',
         source: 'LinkedIn Jobs'
       },
       {
@@ -102,7 +102,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Ernakulam',
         postedDate: subDays(2),
-        applyUrl: 'https://www.naukri.com/ltimindtree-jobs-careers',
+        applyUrl: 'https://www.ltimindtree.com/careers/',
         source: 'Naukri.com'
       },
       {
@@ -117,7 +117,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Thiruvananthapuram',
         postedDate: subDays(2),
-        applyUrl: 'https://www.foundit.in/search/oracle-jobs',
+        applyUrl: 'https://www.oracle.com/in/corporate/careers/',
         source: 'FoundIt'
       },
       {
@@ -132,7 +132,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Ernakulam',
         postedDate: subDays(3),
-        applyUrl: 'https://in.indeed.com/cmp/NielsenIQ/jobs',
+        applyUrl: 'https://nielseniq.com/global/en/careers/',
         source: 'Indeed'
       },
 
@@ -149,7 +149,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Ernakulam',
         postedDate: subDays(1),
-        applyUrl: 'https://learning.tcsionhub.in/hub/national-qualifier-test/',
+        applyUrl: 'https://www.tcs.com/careers/india',
         source: 'Infopark Kochi Careers'
       },
       {
@@ -164,7 +164,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Thiruvananthapuram',
         postedDate: subDays(1),
-        applyUrl: 'https://www.quest-global.com/careers/job-search/?keyword=Software+Engineer&location=Kerala',
+        applyUrl: 'https://www.quest-global.com/careers/',
         source: 'Technopark Trivandrum'
       },
       {
@@ -179,7 +179,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Thiruvananthapuram',
         postedDate: subDays(2),
-        applyUrl: 'https://www.ust.com/en/careers/job-opportunities?keyword=Trainee&location=Trivandrum',
+        applyUrl: 'https://www.ust.com/en/careers',
         source: 'Technopark Trivandrum'
       },
       {
@@ -194,7 +194,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Ernakulam',
         postedDate: subDays(2),
-        applyUrl: 'https://experionglobal.com/careers/#open-positions',
+        applyUrl: 'https://experionglobal.com/careers/',
         source: 'Infopark Kochi Careers'
       },
       {
@@ -209,7 +209,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Thiruvananthapuram',
         postedDate: subDays(3),
-        applyUrl: 'https://tataelxsi.com/careers#campus-drives',
+        applyUrl: 'https://www.tataelxsi.com/careers',
         source: 'Technopark Trivandrum'
       },
       {
@@ -224,7 +224,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Ernakulam',
         postedDate: subDays(3),
-        applyUrl: 'https://www.ibsplc.com/careers#openings',
+        applyUrl: 'https://www.ibsplc.com/careers',
         source: 'Infopark Kochi Careers'
       },
 
@@ -241,7 +241,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Ernakulam',
         postedDate: subDays(1),
-        applyUrl: 'https://carestack.com/careers#software-engineer-trainee',
+        applyUrl: 'https://carestack.com/careers',
         source: 'Kerala Startup Hub'
       },
       {
@@ -256,7 +256,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Ernakulam',
         postedDate: subDays(1),
-        applyUrl: 'https://surveysparrow.com/careers/#openings',
+        applyUrl: 'https://surveysparrow.com/careers/',
         source: 'Infopark Kochi Startups'
       },
       {
@@ -271,7 +271,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Thiruvananthapuram',
         postedDate: subDays(2),
-        applyUrl: 'https://neoito.com/careers/trainee-fullstack-engineer/',
+        applyUrl: 'https://neoito.com/careers/',
         source: 'Technopark Startups'
       },
       {
@@ -286,7 +286,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Ernakulam',
         postedDate: subDays(2),
-        applyUrl: 'https://keyvalue.systems/careers/#apply-trainee-engineer',
+        applyUrl: 'https://keyvalue.systems/careers/',
         source: 'Kerala Startup Hub'
       },
       {
@@ -301,7 +301,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Thiruvananthapuram',
         postedDate: subDays(3),
-        applyUrl: 'https://accubits.com/careers/ai-trainee-engineer/',
+        applyUrl: 'https://accubits.com/careers/',
         source: 'Technopark Startups'
       },
       {
@@ -316,7 +316,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Kozhikode',
         postedDate: subDays(3),
-        applyUrl: 'https://algomox.com/careers/#devops-trainee',
+        applyUrl: 'https://algomox.com/careers/',
         source: 'Cyberpark Kozhikode Startups'
       },
 
@@ -333,7 +333,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Karnataka',
         district: 'Bengaluru',
         postedDate: subDays(1),
-        applyUrl: 'https://careers.google.com/jobs/results/?q=Software%20Engineer%20Early%20Career&location=India',
+        applyUrl: 'https://careers.google.com/locations/bangalore/',
         source: 'Google India Careers'
       },
       {
@@ -348,7 +348,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Telangana',
         district: 'Hyderabad',
         postedDate: subDays(2),
-        applyUrl: 'https://www.ibm.com/in-en/employment/entry-level/',
+        applyUrl: 'https://www.ibm.com/in-en/employment/',
         source: 'IBM Careers'
       },
       {
@@ -363,7 +363,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Karnataka',
         district: 'Bengaluru',
         postedDate: subDays(3),
-        applyUrl: 'https://www.infosys.com/careers/freshers.html',
+        applyUrl: 'https://www.infosys.com/careers.html',
         source: 'Infosys Careers'
       },
       {
@@ -378,7 +378,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Tamil Nadu',
         district: 'Chennai',
         postedDate: subDays(2),
-        applyUrl: 'https://www.zoho.com/careers/job-detail.html?job_id=software-developer-fresher',
+        applyUrl: 'https://www.zoho.com/careers/',
         source: 'Zoho Careers'
       }
     ];
