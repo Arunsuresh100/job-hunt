@@ -42,7 +42,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Ernakulam',
         postedDate: subDays(1),
-        applyUrl: 'https://careers.microsoft.com/v2/global/en/home.html',
+        applyUrl: 'https://careers.microsoft.com/v2/global/en/home.html?q=India',
         source: 'LinkedIn Jobs'
       },
       {
@@ -241,7 +241,7 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Ernakulam',
         postedDate: subDays(1),
-        applyUrl: 'https://carestack.com/careers',
+        applyUrl: 'https://in.linkedin.com/company/carestack/jobs/',
         source: 'Kerala Startup Hub'
       },
       {
