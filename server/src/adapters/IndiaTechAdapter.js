@@ -14,9 +14,12 @@ class IndiaTechAdapter extends BaseAdapter {
     const subDays = (days) => new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
 
     const indiaJobs = [
-      // --- LINKEDIN & NAUKRI VERIFIED EXTERNAL PORTAL JOBS ---
+      // =========================================================================
+      // 1. OFFICIAL COMPANY CAREER PAGE JOBS (For /jobs and /kerala)
+      //    All applyUrls link directly to the corporate careers page on company.com
+      // =========================================================================
       {
-        externalId: 'linkedin-thoughtworks-kochi-01',
+        externalId: 'career-thoughtworks-kochi-01',
         company: 'Thoughtworks India',
         logoUrl: 'https://www.google.com/s2/favicons?domain=thoughtworks.com&sz=128',
         title: 'Graduate Application Developer - React & Node.js',
@@ -28,13 +31,13 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Ernakulam',
         postedDate: subDays(1),
         applyUrl: 'https://www.thoughtworks.com/en-in/careers',
-        source: 'LinkedIn Jobs'
+        source: 'Thoughtworks Careers'
       },
       {
-        externalId: 'linkedin-microsoft-kochi-01',
+        externalId: 'career-microsoft-kochi-01',
         company: 'Microsoft India',
         logoUrl: 'https://www.google.com/s2/favicons?domain=microsoft.com&sz=128',
-        title: 'Software Engineer Trainee (LinkedIn Hiring)',
+        title: 'Software Engineer Trainee (Direct Campus Drive)',
         location: 'Kochi, Ernakulam, Kerala (Hybrid)',
         experienceLevel: 'Fresher (0-1 Yrs)',
         companyType: 'Product',
@@ -43,13 +46,13 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Ernakulam',
         postedDate: subDays(1),
         applyUrl: 'https://careers.microsoft.com/v2/global/en/home.html?q=India',
-        source: 'LinkedIn Jobs'
+        source: 'Microsoft Careers'
       },
       {
-        externalId: 'naukri-cognizant-kochi-01',
+        externalId: 'career-cognizant-kochi-01',
         company: 'Cognizant (CTS)',
         logoUrl: 'https://www.google.com/s2/favicons?domain=cognizant.com&sz=128',
-        title: 'GenC Programmer Analyst Trainee (Naukri Fast Forward)',
+        title: 'GenC Programmer Analyst Trainee',
         location: 'Infopark, Kochi, Ernakulam, Kerala',
         experienceLevel: 'Fresher (0-1 Yrs)',
         companyType: 'Service',
@@ -58,13 +61,13 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Ernakulam',
         postedDate: subDays(1),
         applyUrl: 'https://careers.cognizant.com/in/en',
-        source: 'Naukri.com'
+        source: 'Cognizant Careers'
       },
       {
-        externalId: 'naukri-wipro-tvm-01',
+        externalId: 'career-wipro-tvm-01',
         company: 'Wipro Limited',
         logoUrl: 'https://www.google.com/s2/favicons?domain=wipro.com&sz=128',
-        title: 'Project Engineer - Elite NLTH (Naukri Verified)',
+        title: 'Project Engineer - Elite NLTH Campus Drive',
         location: 'Technopark, Thiruvananthapuram, Kerala',
         experienceLevel: 'Fresher (0 Yrs)',
         companyType: 'Service',
@@ -73,10 +76,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Thiruvananthapuram',
         postedDate: subDays(2),
         applyUrl: 'https://careers.wipro.com/',
-        source: 'Naukri.com'
+        source: 'Wipro Careers'
       },
       {
-        externalId: 'linkedin-amazon-blr-01',
+        externalId: 'career-amazon-blr-01',
         company: 'Amazon India',
         logoUrl: 'https://www.google.com/s2/favicons?domain=amazon.com&sz=128',
         title: 'Software Development Engineer I (SDE-1)',
@@ -88,10 +91,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Bengaluru',
         postedDate: subDays(1),
         applyUrl: 'https://www.amazon.jobs/en/locations/bangalore-india',
-        source: 'LinkedIn Jobs'
+        source: 'Amazon Careers'
       },
       {
-        externalId: 'naukri-ltimindtree-kochi-01',
+        externalId: 'career-ltimindtree-kochi-01',
         company: 'LTIMindtree',
         logoUrl: 'https://www.google.com/s2/favicons?domain=ltimindtree.com&sz=128',
         title: 'Software Trainee Engineer - Cloud & Java',
@@ -103,13 +106,13 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Ernakulam',
         postedDate: subDays(2),
         applyUrl: 'https://www.ltimindtree.com/careers/',
-        source: 'Naukri.com'
+        source: 'LTIMindtree Careers'
       },
       {
-        externalId: 'foundit-oracle-tvm-01',
+        externalId: 'career-oracle-tvm-01',
         company: 'Oracle India',
         logoUrl: 'https://www.google.com/s2/favicons?domain=oracle.com&sz=128',
-        title: 'Associate Software Developer (FoundIt Verified)',
+        title: 'Associate Software Developer',
         location: 'Technopark, Thiruvananthapuram, Kerala',
         experienceLevel: 'Fresher (0-1 Yrs)',
         companyType: 'Product',
@@ -118,10 +121,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Thiruvananthapuram',
         postedDate: subDays(2),
         applyUrl: 'https://www.oracle.com/in/corporate/careers/',
-        source: 'FoundIt'
+        source: 'Oracle Careers'
       },
       {
-        externalId: 'indeed-nielseniq-kochi-01',
+        externalId: 'career-nielseniq-kochi-01',
         company: 'NielsenIQ',
         logoUrl: 'https://www.google.com/s2/favicons?domain=nielseniq.com&sz=128',
         title: 'Junior Data Analyst & Python Trainee',
@@ -133,12 +136,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Ernakulam',
         postedDate: subDays(3),
         applyUrl: 'https://nielseniq.com/global/en/careers/',
-        source: 'Indeed'
+        source: 'NielsenIQ Careers'
       },
-
-      // --- KERALA IT PARKS (Infopark Kochi, Technopark Trivandrum, Cyberpark Calicut) ---
       {
-        externalId: 'kerala-tcs-kochi-01',
+        externalId: 'career-tcs-kochi-01',
         company: 'TCS (Tata Consultancy Services)',
         logoUrl: 'https://www.google.com/s2/favicons?domain=tcs.com&sz=128',
         title: 'TCS NQT Graduate Trainee (Infopark Kochi)',
@@ -150,10 +151,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Ernakulam',
         postedDate: subDays(1),
         applyUrl: 'https://www.tcs.com/careers/india',
-        source: 'Infopark Kochi Careers'
+        source: 'TCS Careers'
       },
       {
-        externalId: 'kerala-quest-tvm-01',
+        externalId: 'career-quest-tvm-01',
         company: 'Quest Global Services',
         logoUrl: 'https://www.google.com/s2/favicons?domain=quest-global.com&sz=128',
         title: 'Junior Software Developer (Technopark Trivandrum)',
@@ -165,10 +166,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Thiruvananthapuram',
         postedDate: subDays(1),
         applyUrl: 'https://www.quest-global.com/careers/',
-        source: 'Technopark Trivandrum'
+        source: 'Quest Global Careers'
       },
       {
-        externalId: 'kerala-ust-tvm-01',
+        externalId: 'career-ust-tvm-01',
         company: 'UST Global',
         logoUrl: 'https://www.google.com/s2/favicons?domain=ust.com&sz=128',
         title: 'Associate Software Engineer - Trainee Drive 2026',
@@ -180,10 +181,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Thiruvananthapuram',
         postedDate: subDays(2),
         applyUrl: 'https://www.ust.com/en/careers',
-        source: 'Technopark Trivandrum'
+        source: 'UST Careers'
       },
       {
-        externalId: 'kerala-experion-kochi-01',
+        externalId: 'career-experion-kochi-01',
         company: 'Experion Technologies',
         logoUrl: 'https://www.google.com/s2/favicons?domain=experionglobal.com&sz=128',
         title: 'Full Stack Java / Python Trainee (Infopark Kakkanad)',
@@ -195,10 +196,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Ernakulam',
         postedDate: subDays(2),
         applyUrl: 'https://experionglobal.com/careers/',
-        source: 'Infopark Kochi Careers'
+        source: 'Experion Careers'
       },
       {
-        externalId: 'kerala-tata-elxsi-tvm-01',
+        externalId: 'career-tata-elxsi-tvm-01',
         company: 'Tata Elxsi',
         logoUrl: 'https://www.google.com/s2/favicons?domain=tataelxsi.com&sz=128',
         title: 'Embedded C / C++ Engineer Trainee',
@@ -210,10 +211,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Thiruvananthapuram',
         postedDate: subDays(3),
         applyUrl: 'https://www.tataelxsi.com/careers',
-        source: 'Technopark Trivandrum'
+        source: 'Tata Elxsi Careers'
       },
       {
-        externalId: 'kerala-ibs-kochi-01',
+        externalId: 'career-ibs-kochi-01',
         company: 'IBS Software',
         logoUrl: 'https://www.google.com/s2/favicons?domain=ibsplc.com&sz=128',
         title: 'Junior Software Engineer (Aviation Tech)',
@@ -225,12 +226,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Ernakulam',
         postedDate: subDays(3),
         applyUrl: 'https://www.ibsplc.com/careers',
-        source: 'Infopark Kochi Careers'
+        source: 'IBS Careers'
       },
-
-      // --- KERALA STARTUPS & IT PARKS ---
       {
-        externalId: 'kerala-startup-carestack-kochi-01',
+        externalId: 'career-carestack-kochi-01',
         company: 'CareStack (Good Methods Global)',
         logoUrl: 'https://www.google.com/s2/favicons?domain=carestack.com&sz=128',
         title: 'Junior Frontend Developer - React (CareStack Startup)',
@@ -241,11 +240,11 @@ class IndiaTechAdapter extends BaseAdapter {
         state: 'Kerala',
         district: 'Ernakulam',
         postedDate: subDays(1),
-        applyUrl: 'https://in.linkedin.com/company/carestack/jobs/',
-        source: 'Kerala Startup Hub'
+        applyUrl: 'https://carestack.com/careers',
+        source: 'CareStack Careers'
       },
       {
-        externalId: 'kerala-startup-surveysparrow-kochi-01',
+        externalId: 'career-surveysparrow-kochi-01',
         company: 'SurveySparrow',
         logoUrl: 'https://www.google.com/s2/favicons?domain=surveysparrow.com&sz=128',
         title: 'Software Development Engineer Trainee (Fullstack)',
@@ -257,10 +256,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Ernakulam',
         postedDate: subDays(1),
         applyUrl: 'https://surveysparrow.com/careers/',
-        source: 'Infopark Kochi Startups'
+        source: 'SurveySparrow Careers'
       },
       {
-        externalId: 'kerala-startup-neoito-tvm-01',
+        externalId: 'career-neoito-tvm-01',
         company: 'NeoITO',
         logoUrl: 'https://www.google.com/s2/favicons?domain=neoito.com&sz=128',
         title: 'Trainee Full Stack Engineer - Node.js / React',
@@ -272,10 +271,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Thiruvananthapuram',
         postedDate: subDays(2),
         applyUrl: 'https://neoito.com/careers/',
-        source: 'Technopark Startups'
+        source: 'NeoITO Careers'
       },
       {
-        externalId: 'kerala-startup-keyvalue-kochi-01',
+        externalId: 'career-keyvalue-kochi-01',
         company: 'KeyValue Software Systems',
         logoUrl: 'https://www.google.com/s2/favicons?domain=keyvalue.systems&sz=128',
         title: 'Trainee Software Engineer (Python / Javascript)',
@@ -287,10 +286,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Ernakulam',
         postedDate: subDays(2),
         applyUrl: 'https://keyvalue.systems/careers/',
-        source: 'Kerala Startup Hub'
+        source: 'KeyValue Careers'
       },
       {
-        externalId: 'kerala-startup-accubits-tvm-01',
+        externalId: 'career-accubits-tvm-01',
         company: 'Accubits Technologies',
         logoUrl: 'https://www.google.com/s2/favicons?domain=accubits.com&sz=128',
         title: 'AI & Blockchain Engineer Trainee (Technopark)',
@@ -302,10 +301,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Thiruvananthapuram',
         postedDate: subDays(3),
         applyUrl: 'https://accubits.com/careers/',
-        source: 'Technopark Startups'
+        source: 'Accubits Careers'
       },
       {
-        externalId: 'kerala-startup-algomox-calicut-01',
+        externalId: 'career-algomox-calicut-01',
         company: 'Algomox',
         logoUrl: 'https://www.google.com/s2/favicons?domain=algomox.com&sz=128',
         title: 'Junior Cloud & DevOps Trainee (Cyberpark Kozhikode)',
@@ -317,12 +316,10 @@ class IndiaTechAdapter extends BaseAdapter {
         district: 'Kozhikode',
         postedDate: subDays(3),
         applyUrl: 'https://algomox.com/careers/',
-        source: 'Cyberpark Kozhikode Startups'
+        source: 'Algomox Careers'
       },
-
-      // --- MAJOR INDIAN IT HUBS ---
       {
-        externalId: 'india-google-blr-01',
+        externalId: 'career-google-blr-01',
         company: 'Google',
         logoUrl: 'https://www.google.com/s2/favicons?domain=google.com&sz=128',
         title: 'Software Engineer, Early Career 2026',
@@ -337,7 +334,7 @@ class IndiaTechAdapter extends BaseAdapter {
         source: 'Google India Careers'
       },
       {
-        externalId: 'india-ibm-hyd-01',
+        externalId: 'career-ibm-hyd-01',
         company: 'IBM India',
         logoUrl: 'https://www.google.com/s2/favicons?domain=ibm.com&sz=128',
         title: 'Associate System Engineer - Campus Drive',
@@ -352,7 +349,7 @@ class IndiaTechAdapter extends BaseAdapter {
         source: 'IBM Careers'
       },
       {
-        externalId: 'india-infosys-mys-01',
+        externalId: 'career-infosys-mys-01',
         company: 'Infosys',
         logoUrl: 'https://www.google.com/s2/favicons?domain=infosys.com&sz=128',
         title: 'Specialist Programmer / Systems Engineer Drive',
@@ -367,7 +364,7 @@ class IndiaTechAdapter extends BaseAdapter {
         source: 'Infosys Careers'
       },
       {
-        externalId: 'india-zoho-chn-01',
+        externalId: 'career-zoho-chn-01',
         company: 'Zoho Corporation',
         logoUrl: 'https://www.google.com/s2/favicons?domain=zoho.com&sz=128',
         title: 'Member Technical Staff - Software Developer',
@@ -380,6 +377,85 @@ class IndiaTechAdapter extends BaseAdapter {
         postedDate: subDays(2),
         applyUrl: 'https://www.zoho.com/careers/',
         source: 'Zoho Careers'
+      },
+
+      // =========================================================================
+      // 2. EXTERNAL PORTAL JOBS (For /portals page only)
+      // =========================================================================
+      {
+        externalId: 'portal-thoughtworks-kochi-01',
+        company: 'Thoughtworks India',
+        logoUrl: 'https://www.google.com/s2/favicons?domain=thoughtworks.com&sz=128',
+        title: 'Graduate Application Developer - React & Node.js',
+        location: 'Infopark Kakkanad, Kochi, Kerala',
+        experienceLevel: 'Fresher (0 Yrs)',
+        companyType: 'Product',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Ernakulam',
+        postedDate: subDays(1),
+        applyUrl: 'https://www.linkedin.com/company/thoughtworks/jobs/',
+        source: 'LinkedIn Jobs'
+      },
+      {
+        externalId: 'portal-microsoft-kochi-01',
+        company: 'Microsoft India',
+        logoUrl: 'https://www.google.com/s2/favicons?domain=microsoft.com&sz=128',
+        title: 'Software Engineer Trainee (LinkedIn Hiring)',
+        location: 'Kochi, Ernakulam, Kerala (Hybrid)',
+        experienceLevel: 'Fresher (0-1 Yrs)',
+        companyType: 'Product',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Ernakulam',
+        postedDate: subDays(1),
+        applyUrl: 'https://www.linkedin.com/company/microsoft/jobs/',
+        source: 'LinkedIn Jobs'
+      },
+      {
+        externalId: 'portal-cognizant-kochi-01',
+        company: 'Cognizant (CTS)',
+        logoUrl: 'https://www.google.com/s2/favicons?domain=cognizant.com&sz=128',
+        title: 'GenC Programmer Analyst Trainee (Naukri Fast Forward)',
+        location: 'Infopark, Kochi, Ernakulam, Kerala',
+        experienceLevel: 'Fresher (0-1 Yrs)',
+        companyType: 'Service',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Ernakulam',
+        postedDate: subDays(1),
+        applyUrl: 'https://www.naukri.com/cognizant-jobs-careers',
+        source: 'Naukri.com'
+      },
+      {
+        externalId: 'portal-wipro-tvm-01',
+        company: 'Wipro Limited',
+        logoUrl: 'https://www.google.com/s2/favicons?domain=wipro.com&sz=128',
+        title: 'Project Engineer - Elite NLTH (Naukri Verified)',
+        location: 'Technopark, Thiruvananthapuram, Kerala',
+        experienceLevel: 'Fresher (0 Yrs)',
+        companyType: 'Service',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Thiruvananthapuram',
+        postedDate: subDays(2),
+        applyUrl: 'https://www.naukri.com/wipro-jobs-careers',
+        source: 'Naukri.com'
+      },
+      {
+        externalId: 'portal-amazon-blr-01',
+        company: 'Amazon India',
+        logoUrl: 'https://www.google.com/s2/favicons?domain=amazon.com&sz=128',
+        title: 'Software Development Engineer I (SDE-1)',
+        location: 'Bengaluru, Karnataka, India',
+        experienceLevel: 'Fresher (0-2 Yrs)',
+        companyType: 'Product',
+        country: 'India',
+        state: 'Karnataka',
+        district: 'Bengaluru',
+        postedDate: subDays(1),
+        applyUrl: 'https://www.linkedin.com/company/amazon/jobs/',
+        source: 'LinkedIn Jobs'
       }
     ];
 
