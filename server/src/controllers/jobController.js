@@ -23,7 +23,8 @@ const getJobs = async (req, res) => {
       expLevel = 'ALL',
       showArchived = 'false',
       sourceType = 'ALL', // 'CAREER' (official company pages), 'PORTAL' (LinkedIn, Naukri, etc.), or 'ALL'
-      source = ''
+      source = '',
+      todayOnly = 'false'
     } = req.query;
 
     const pageNum = parseInt(page, 10) || 1;
@@ -35,6 +36,13 @@ const getJobs = async (req, res) => {
     // Hard filter: only show non-archived (posted within 7 days) by default
     if (showArchived !== 'true') {
       where.isArchived = false;
+    }
+
+    // Strict Today-Only Filter (Posted today / <= 24 hours)
+    if (todayOnly === 'true') {
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      where.postedDate = { gte: todayStart };
     }
 
     // Specific Source Filter (e.g. LinkedIn, Naukri, FoundIt)
@@ -52,8 +60,8 @@ const getJobs = async (req, res) => {
       where.companyType = companyType;
     }
 
-    // Country / India-Only Filter (Default to India unless explicitly requesting Worldwide)
-    if (indiaOnly === 'true' || country === 'India' || (indiaOnly !== 'false' && !country)) {
+    // Country / India-Only Filter (Only enforce for CAREER / default views, NOT for PORTAL)
+    if (sourceType !== 'PORTAL' && (indiaOnly === 'true' || country === 'India' || (indiaOnly !== 'false' && !country))) {
       where.country = 'India';
     }
 
@@ -189,6 +197,7 @@ const getJobs = async (req, res) => {
     // Format response with metadata
     const formattedJobs = jobs.map(job => ({
       ...job,
+      sourceName: job.source,
       isSaved: job.savedItems.length > 0, // Flag if saved
       daysAgo: Math.max(0, Math.floor((Date.now() - new Date(job.postedDate).getTime()) / (1000 * 60 * 60 * 24)))
     }));

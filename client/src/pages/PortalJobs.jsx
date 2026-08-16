@@ -9,7 +9,10 @@ import {
   Check,
   Building,
   Laptop,
-  CheckCircle2
+  CheckCircle2,
+  FileText,
+  Clock,
+  Zap
 } from 'lucide-react';
 import { fetchJobs, toggleSaveItem } from '../api/client';
 import JobCard from '../components/JobCard';
@@ -20,9 +23,17 @@ const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
   const [search, setSearch] = useState('');
   const [portalSource, setPortalSource] = useState('');
   const [companyType, setCompanyType] = useState('');
+  const [todayOnly, setTodayOnly] = useState(true); // Default to Today's Fresh Jobs
+  const [matchedOnly, setMatchedOnly] = useState(false);
   const [isPortalDropdownOpen, setIsPortalDropdownOpen] = useState(false);
 
   const portalRef = useRef(null);
+
+  // Candidate Resume / Profile Skills
+  const candidateSkills = (userProfile?.skills || 'React, Node.js, JavaScript, Python, Full Stack')
+    .split(/[,;\s]+/)
+    .map((s) => s.trim().toLowerCase())
+    .filter((s) => s.length > 1);
 
   // Close portal dropdown when clicking outside
   useEffect(() => {
@@ -48,27 +59,39 @@ const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
 
       if (data.success) {
         let fetched = data.jobs || [];
-        // If specific portal filter selected, filter client-side as well for accuracy
-        if (portalSource) {
-          fetched = fetched.filter(
-            (j) => j.sourceName && j.sourceName.toLowerCase().includes(portalSource.toLowerCase())
+
+        // 1. Filter for portal source name
+        fetched = fetched.filter((j) => {
+          const src = (j.sourceName || j.source || '').toLowerCase();
+          if (portalSource) {
+            return src.includes(portalSource.toLowerCase());
+          }
+          return (
+            src.includes('linkedin') ||
+            src.includes('naukri') ||
+            src.includes('foundit') ||
+            src.includes('indeed') ||
+            src.includes('monster') ||
+            src.includes('jobicy') ||
+            src.includes('remotive') ||
+            src.includes('adzuna') ||
+            src.includes('jsearch')
           );
-        } else {
-          // Show all aggregator portal jobs (LinkedIn, Naukri, FoundIt, Indeed, Jobicy, Remotive, Adzuna, JSearch)
-          fetched = fetched.filter(
-            (j) =>
-              j.sourceName &&
-              (j.sourceName.toLowerCase().includes('linkedin') ||
-                j.sourceName.toLowerCase().includes('naukri') ||
-                j.sourceName.toLowerCase().includes('foundit') ||
-                j.sourceName.toLowerCase().includes('indeed') ||
-                j.sourceName.toLowerCase().includes('monster') ||
-                j.sourceName.toLowerCase().includes('jobicy') ||
-                j.sourceName.toLowerCase().includes('remotive') ||
-                j.sourceName.toLowerCase().includes('adzuna') ||
-                j.sourceName.toLowerCase().includes('jsearch'))
-          );
+        });
+
+        // 2. Strict Today-Only Filter (Posted Today / <= 1 Day Old)
+        if (todayOnly) {
+          fetched = fetched.filter((j) => (j.daysAgo !== undefined ? j.daysAgo <= 1 : true));
         }
+
+        // 3. Resume / Profile Skill Match Filter
+        if (matchedOnly && candidateSkills.length > 0) {
+          fetched = fetched.filter((j) => {
+            const textToMatch = `${j.title} ${j.company} ${j.description || ''} ${j.location || ''}`.toLowerCase();
+            return candidateSkills.some((skill) => textToMatch.includes(skill));
+          });
+        }
+
         setJobs(fetched);
       }
     } catch (err) {
@@ -80,7 +103,7 @@ const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
 
   useEffect(() => {
     loadPortalJobs();
-  }, [search, portalSource, companyType]);
+  }, [search, portalSource, companyType, todayOnly, matchedOnly]);
 
   const handleToggleSave = async (itemType, itemId) => {
     try {
@@ -109,9 +132,18 @@ const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
         <div className="absolute -right-6 -top-6 w-36 h-36 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="space-y-2 relative z-10">
-          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-[8px] text-[11px] sm:text-xs font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 whitespace-nowrap flex-shrink-0">
-            <Globe className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-            <span className="whitespace-nowrap">LinkedIn, Naukri & Major Job Portals</span>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-[8px] text-[11px] sm:text-xs font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 whitespace-nowrap flex-shrink-0">
+              <Globe className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+              <span className="whitespace-nowrap">LinkedIn, Naukri & Major Job Portals</span>
+            </div>
+
+            {userProfile?.fullName && (
+              <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-[8px] text-[11px] sm:text-xs font-semibold bg-blue-500/10 text-blue-300 border border-blue-500/30 whitespace-nowrap flex-shrink-0">
+                <FileText className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
+                <span>Resume Profile Matched ({userProfile.fullName})</span>
+              </div>
+            )}
           </div>
 
           <h1 className="text-xl sm:text-3xl font-black tracking-tight leading-tight bg-gradient-to-r from-white via-zinc-100 to-emerald-400 bg-clip-text text-transparent">
@@ -119,7 +151,7 @@ const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
           </h1>
 
           <p className="text-zinc-400 text-xs sm:text-sm max-w-2xl leading-relaxed font-medium">
-            Verified hiring drives and direct recruiters sourced from <strong>LinkedIn Careers</strong>, <strong>Naukri.com</strong>, <strong>FoundIt</strong>, and <strong>Indeed</strong> for entry-level IT roles (0-2 Yrs).
+            Latest hiring drives and recruiter postings sourced from <strong>LinkedIn Careers</strong>, <strong>Naukri.com</strong>, <strong>FoundIt</strong>, and <strong>Indeed</strong> matching your candidate profile.
           </p>
         </div>
 
@@ -179,15 +211,15 @@ const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
         </div>
       </div>
 
-      {/* Filter Toolbar: Search Bar + Custom Glassmorphic Portal Dropdown */}
+      {/* Filter Toolbar: Search Bar + Today Only Toggle + Resume Skill Match Toggle + Custom Glassmorphic Portal Dropdown */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-zinc-950/80 p-3 rounded-2xl border border-zinc-800/90 shadow-xl z-40 relative">
-        <div className="relative w-full sm:w-80">
+        <div className="relative w-full sm:w-72">
           <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search LinkedIn & Naukri Jobs (React, Java...)"
+            placeholder="Search LinkedIn & Naukri Jobs..."
             className="w-full pl-9 pr-8 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition-colors"
           />
           {search && (
@@ -198,6 +230,37 @@ const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
               ×
             </button>
           )}
+        </div>
+
+        {/* Quick Toggles: Today Only & Resume Match */}
+        <div className="flex items-center space-x-2 w-full sm:w-auto">
+          <button
+            type="button"
+            onClick={() => setTodayOnly(!todayOnly)}
+            className={`flex-1 sm:flex-none px-3 py-2 rounded-xl text-xs font-bold transition-all border flex items-center justify-center space-x-1.5 active:scale-95 ${
+              todayOnly
+                ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-sm'
+                : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:text-white'
+            }`}
+            title="Show only fresh jobs posted today (<= 24 hrs)"
+          >
+            <Zap className={`w-3.5 h-3.5 ${todayOnly ? 'text-amber-400 fill-amber-400' : ''}`} />
+            <span>Today's Jobs Only</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setMatchedOnly(!matchedOnly)}
+            className={`flex-1 sm:flex-none px-3 py-2 rounded-xl text-xs font-bold transition-all border flex items-center justify-center space-x-1.5 active:scale-95 ${
+              matchedOnly
+                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-sm'
+                : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:text-white'
+            }`}
+            title="Filter jobs matching candidate resume skills"
+          >
+            <FileText className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Resume Skill Match</span>
+          </button>
         </div>
 
         {/* Custom Portal Filter Dropdown */}
@@ -270,8 +333,8 @@ const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
           <div className="max-w-md space-y-1">
             <h3 className="text-base font-bold text-white capitalize">No Portal Postings Found</h3>
             <p className="text-xs text-zinc-400 max-w-sm mx-auto capitalize">
-              {search || portalSource
-                ? 'Try Adjusting Your Portal Filter Or Search Keywords.'
+              {todayOnly || matchedOnly || search || portalSource
+                ? 'Try disabling "Today\'s Jobs Only" or "Resume Skill Match" to view all available portal postings.'
                 : 'Click "Sync Live Feeds" Above To Fetch New LinkedIn & Naukri Postings.'}
             </p>
           </div>
