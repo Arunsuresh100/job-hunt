@@ -16,9 +16,11 @@ import {
 } from 'lucide-react';
 import { fetchJobs, toggleSaveItem } from '../api/client';
 import JobCard from '../components/JobCard';
+import JobDetailsModal from '../components/JobDetailsModal';
 
 const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
   const [jobs, setJobs] = useState([]);
+  const [selectedJob, setSelectedJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [portalSource, setPortalSource] = useState('');
@@ -29,11 +31,19 @@ const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
 
   const portalRef = useRef(null);
 
-  // Candidate Resume / Profile Skills
-  const candidateSkills = (userProfile?.skills || 'React, Node.js, JavaScript, Python, Full Stack')
-    .split(/[,;\s]+/)
-    .map((s) => s.trim().toLowerCase())
-    .filter((s) => s.length > 1);
+  // Candidate Resume / Profile Skills safely handled for Array or String
+  const rawSkills = userProfile?.skills;
+  let candidateSkills = [];
+  if (Array.isArray(rawSkills)) {
+    candidateSkills = rawSkills.map((s) => String(s).trim().toLowerCase()).filter((s) => s.length > 0);
+  } else if (typeof rawSkills === 'string' && rawSkills.trim().length > 0) {
+    candidateSkills = rawSkills
+      .split(/[,;\s]+/)
+      .map((s) => s.trim().toLowerCase())
+      .filter((s) => s.length > 1);
+  } else {
+    candidateSkills = ['react', 'node.js', 'javascript', 'python', 'fullstack'];
+  }
 
   // Close portal dropdown when clicking outside
   useEffect(() => {
@@ -232,34 +242,34 @@ const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
           )}
         </div>
 
-        {/* Quick Toggles: Today Only & Resume Match */}
-        <div className="flex items-center space-x-2 w-full sm:w-auto">
+        {/* Quick Toggles: Today Only & Resume Match (Strict Single Line Layout) */}
+        <div className="grid grid-cols-2 gap-2 w-full sm:flex sm:w-auto">
           <button
             type="button"
             onClick={() => setTodayOnly(!todayOnly)}
-            className={`flex-1 sm:flex-none px-3 py-2 rounded-xl text-xs font-bold transition-all border flex items-center justify-center space-x-1.5 active:scale-95 ${
+            className={`px-2.5 sm:px-3 py-2 rounded-xl text-xs font-bold transition-all border flex items-center justify-center space-x-1.5 active:scale-95 whitespace-nowrap min-w-0 ${
               todayOnly
                 ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-sm'
                 : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:text-white'
             }`}
             title="Show only fresh jobs posted today (<= 24 hrs)"
           >
-            <Zap className={`w-3.5 h-3.5 ${todayOnly ? 'text-amber-400 fill-amber-400' : ''}`} />
-            <span>Today's Jobs Only</span>
+            <Zap className={`w-3.5 h-3.5 flex-shrink-0 ${todayOnly ? 'text-amber-400 fill-amber-400' : ''}`} />
+            <span className="whitespace-nowrap truncate">Today's Jobs</span>
           </button>
 
           <button
             type="button"
             onClick={() => setMatchedOnly(!matchedOnly)}
-            className={`flex-1 sm:flex-none px-3 py-2 rounded-xl text-xs font-bold transition-all border flex items-center justify-center space-x-1.5 active:scale-95 ${
+            className={`px-2.5 sm:px-3 py-2 rounded-xl text-xs font-bold transition-all border flex items-center justify-center space-x-1.5 active:scale-95 whitespace-nowrap min-w-0 ${
               matchedOnly
                 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-sm'
                 : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:text-white'
             }`}
             title="Filter jobs matching candidate resume skills"
           >
-            <FileText className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Resume Skill Match</span>
+            <FileText className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+            <span className="whitespace-nowrap truncate">Resume Match</span>
           </button>
         </div>
 
@@ -347,10 +357,20 @@ const PortalJobs = ({ userProfile, onUpdateSavedCount }) => {
               job={job}
               onToggleSave={handleToggleSave}
               userProfile={userProfile}
+              onSelectJob={(j) => setSelectedJob(j)}
             />
           ))}
         </div>
       )}
+
+      {/* In-App Job Details Modal */}
+      <JobDetailsModal
+        job={selectedJob}
+        isOpen={!!selectedJob}
+        onClose={() => setSelectedJob(null)}
+        onToggleSave={handleToggleSave}
+        userProfile={userProfile}
+      />
     </div>
   );
 };

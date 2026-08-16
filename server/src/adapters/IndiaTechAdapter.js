@@ -16,18 +16,6 @@ class IndiaTechAdapter extends BaseAdapter {
     const indiaJobs = [
       // --- LINKEDIN & NAUKRI VERIFIED EXTERNAL PORTAL JOBS ---
       {
-        externalId: 'linkedin-microsoft-kochi-01',
-        company: 'Microsoft India',
-        logoUrl: 'https://www.google.com/s2/favicons?domain=microsoft.com&sz=128',
-        title: 'Software Engineer Trainee (LinkedIn Hiring)',
-        location: 'Kochi, Ernakulam, Kerala (Hybrid)',
-        experienceLevel: 'Fresher (0-1 Yrs)',
-        companyType: 'Product',
-        postedDate: subDays(1),
-        applyUrl: 'https://www.linkedin.com/jobs/search/?keywords=Microsoft%20Software%20Engineer%20Fresher',
-        source: 'LinkedIn Jobs'
-      },
-      {
         externalId: 'linkedin-thoughtworks-kochi-01',
         company: 'Thoughtworks India',
         logoUrl: 'https://www.google.com/s2/favicons?domain=thoughtworks.com&sz=128',
@@ -35,8 +23,26 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Infopark Kakkanad, Kochi, Kerala',
         experienceLevel: 'Fresher (0 Yrs)',
         companyType: 'Product',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Ernakulam',
         postedDate: subDays(1),
-        applyUrl: 'https://www.linkedin.com/jobs/search/?keywords=Thoughtworks%20Graduate%20Developer',
+        applyUrl: 'https://www.linkedin.com/company/thoughtworks/jobs/',
+        source: 'LinkedIn Jobs'
+      },
+      {
+        externalId: 'linkedin-microsoft-kochi-01',
+        company: 'Microsoft India',
+        logoUrl: 'https://www.google.com/s2/favicons?domain=microsoft.com&sz=128',
+        title: 'Software Engineer Trainee (LinkedIn Hiring)',
+        location: 'Kochi, Ernakulam, Kerala (Hybrid)',
+        experienceLevel: 'Fresher (0-1 Yrs)',
+        companyType: 'Product',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Ernakulam',
+        postedDate: subDays(1),
+        applyUrl: 'https://www.linkedin.com/company/microsoft/jobs/',
         source: 'LinkedIn Jobs'
       },
       {
@@ -47,8 +53,11 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Infopark, Kochi, Ernakulam, Kerala',
         experienceLevel: 'Fresher (0-1 Yrs)',
         companyType: 'Service',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Ernakulam',
         postedDate: subDays(1),
-        applyUrl: 'https://www.naukri.com/cognizant-genc-freshers-jobs',
+        applyUrl: 'https://www.naukri.com/cognizant-jobs-careers',
         source: 'Naukri.com'
       },
       {
@@ -59,8 +68,11 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Technopark, Thiruvananthapuram, Kerala',
         experienceLevel: 'Fresher (0 Yrs)',
         companyType: 'Service',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Thiruvananthapuram',
         postedDate: subDays(2),
-        applyUrl: 'https://www.naukri.com/wipro-elite-nlth-jobs',
+        applyUrl: 'https://www.naukri.com/wipro-jobs-careers',
         source: 'Naukri.com'
       },
       {
@@ -71,8 +83,11 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Bengaluru, Karnataka, India',
         experienceLevel: 'Fresher (0-2 Yrs)',
         companyType: 'Product',
+        country: 'India',
+        state: 'Karnataka',
+        district: 'Bengaluru',
         postedDate: subDays(1),
-        applyUrl: 'https://www.linkedin.com/jobs/search/?keywords=Amazon%20SDE%201%20India',
+        applyUrl: 'https://www.linkedin.com/company/amazon/jobs/',
         source: 'LinkedIn Jobs'
       },
       {
@@ -83,8 +98,11 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Infopark, Kochi, Ernakulam, Kerala',
         experienceLevel: 'Fresher (0-1 Yrs)',
         companyType: 'Service',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Ernakulam',
         postedDate: subDays(2),
-        applyUrl: 'https://www.naukri.com/ltimindtree-fresher-jobs',
+        applyUrl: 'https://www.naukri.com/ltimindtree-jobs-careers',
         source: 'Naukri.com'
       },
       {
@@ -95,8 +113,11 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Technopark, Thiruvananthapuram, Kerala',
         experienceLevel: 'Fresher (0-1 Yrs)',
         companyType: 'Product',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Thiruvananthapuram',
         postedDate: subDays(2),
-        applyUrl: 'https://www.foundit.in/search/oracle-software-developer-jobs',
+        applyUrl: 'https://www.foundit.in/search/oracle-jobs',
         source: 'FoundIt'
       },
       {
@@ -107,8 +128,11 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Kochi, Ernakulam, Kerala',
         experienceLevel: 'Fresher (0-2 Yrs)',
         companyType: 'Product',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Ernakulam',
         postedDate: subDays(3),
-        applyUrl: 'https://in.indeed.com/jobs?q=NielsenIQ+Data+Analyst+Kochi',
+        applyUrl: 'https://in.indeed.com/cmp/NielsenIQ/jobs',
         source: 'Indeed'
       },
 
@@ -121,6 +145,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Kochi, Ernakulam, Kerala',
         experienceLevel: 'Fresher (0 Yrs)',
         companyType: 'Service',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Ernakulam',
         postedDate: subDays(1),
         applyUrl: 'https://learning.tcsionhub.in/hub/national-qualifier-test/',
         source: 'Infopark Kochi Careers'
@@ -133,6 +160,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Trivandrum, Thiruvananthapuram, Kerala',
         experienceLevel: 'Fresher (0-1 Yrs)',
         companyType: 'Service',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Thiruvananthapuram',
         postedDate: subDays(1),
         applyUrl: 'https://www.quest-global.com/careers/job-search/?keyword=Software+Engineer&location=Kerala',
         source: 'Technopark Trivandrum'
@@ -145,6 +175,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Technopark, Thiruvananthapuram, Kerala',
         experienceLevel: 'Fresher (0 Yrs)',
         companyType: 'Service',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Thiruvananthapuram',
         postedDate: subDays(2),
         applyUrl: 'https://www.ust.com/en/careers/job-opportunities?keyword=Trainee&location=Trivandrum',
         source: 'Technopark Trivandrum'
@@ -157,6 +190,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Infopark, Kochi, Ernakulam, Kerala',
         experienceLevel: 'Fresher (0-2 Yrs)',
         companyType: 'Service',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Ernakulam',
         postedDate: subDays(2),
         applyUrl: 'https://experionglobal.com/careers/#open-positions',
         source: 'Infopark Kochi Careers'
@@ -169,6 +205,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Technopark, Thiruvananthapuram, Kerala',
         experienceLevel: 'Fresher (0-1 Yrs)',
         companyType: 'Service',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Thiruvananthapuram',
         postedDate: subDays(3),
         applyUrl: 'https://tataelxsi.com/careers#campus-drives',
         source: 'Technopark Trivandrum'
@@ -181,6 +220,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Infopark, Kochi, Ernakulam, Kerala',
         experienceLevel: 'Fresher (0-2 Yrs)',
         companyType: 'Product',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Ernakulam',
         postedDate: subDays(3),
         applyUrl: 'https://www.ibsplc.com/careers#openings',
         source: 'Infopark Kochi Careers'
@@ -195,6 +237,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Infopark Kakkanad, Kochi, Ernakulam, Kerala',
         experienceLevel: 'Fresher (0-1 Yrs)',
         companyType: 'Startup',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Ernakulam',
         postedDate: subDays(1),
         applyUrl: 'https://carestack.com/careers#software-engineer-trainee',
         source: 'Kerala Startup Hub'
@@ -207,6 +252,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Infopark Phase 2, Kochi, Ernakulam, Kerala',
         experienceLevel: 'Fresher (0-2 Yrs)',
         companyType: 'Startup',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Ernakulam',
         postedDate: subDays(1),
         applyUrl: 'https://surveysparrow.com/careers/#openings',
         source: 'Infopark Kochi Startups'
@@ -219,6 +267,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Technopark TBI, Thiruvananthapuram, Kerala',
         experienceLevel: 'Fresher (0 Yrs)',
         companyType: 'Startup',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Thiruvananthapuram',
         postedDate: subDays(2),
         applyUrl: 'https://neoito.com/careers/trainee-fullstack-engineer/',
         source: 'Technopark Startups'
@@ -231,6 +282,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Kakkanad, Kochi, Ernakulam, Kerala',
         experienceLevel: 'Fresher (0-1 Yrs)',
         companyType: 'Startup',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Ernakulam',
         postedDate: subDays(2),
         applyUrl: 'https://keyvalue.systems/careers/#apply-trainee-engineer',
         source: 'Kerala Startup Hub'
@@ -243,6 +297,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Technopark, Thiruvananthapuram, Kerala',
         experienceLevel: 'Fresher (0-2 Yrs)',
         companyType: 'Startup',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Thiruvananthapuram',
         postedDate: subDays(3),
         applyUrl: 'https://accubits.com/careers/ai-trainee-engineer/',
         source: 'Technopark Startups'
@@ -255,6 +312,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Cyberpark, Kozhikode, Kerala',
         experienceLevel: 'Fresher (0-1 Yrs)',
         companyType: 'Startup',
+        country: 'India',
+        state: 'Kerala',
+        district: 'Kozhikode',
         postedDate: subDays(3),
         applyUrl: 'https://algomox.com/careers/#devops-trainee',
         source: 'Cyberpark Kozhikode Startups'
@@ -269,6 +329,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Bengaluru, Karnataka, India',
         experienceLevel: 'Fresher (0-1 Yrs)',
         companyType: 'Product',
+        country: 'India',
+        state: 'Karnataka',
+        district: 'Bengaluru',
         postedDate: subDays(1),
         applyUrl: 'https://careers.google.com/jobs/results/?q=Software%20Engineer%20Early%20Career&location=India',
         source: 'Google India Careers'
@@ -281,6 +344,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Hyderabad, Telangana, India',
         experienceLevel: 'Fresher (0 Yrs)',
         companyType: 'Service',
+        country: 'India',
+        state: 'Telangana',
+        district: 'Hyderabad',
         postedDate: subDays(2),
         applyUrl: 'https://www.ibm.com/in-en/employment/entry-level/',
         source: 'IBM Careers'
@@ -293,6 +359,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Bengaluru / Mysuru, Karnataka, India',
         experienceLevel: 'Fresher (0-2 Yrs)',
         companyType: 'Service',
+        country: 'India',
+        state: 'Karnataka',
+        district: 'Bengaluru',
         postedDate: subDays(3),
         applyUrl: 'https://www.infosys.com/careers/freshers.html',
         source: 'Infosys Careers'
@@ -305,6 +374,9 @@ class IndiaTechAdapter extends BaseAdapter {
         location: 'Chennai / Tenkasi, Tamil Nadu, India',
         experienceLevel: 'Fresher (0-1 Yrs)',
         companyType: 'Product',
+        country: 'India',
+        state: 'Tamil Nadu',
+        district: 'Chennai',
         postedDate: subDays(2),
         applyUrl: 'https://www.zoho.com/careers/job-detail.html?job_id=software-developer-fresher',
         source: 'Zoho Careers'

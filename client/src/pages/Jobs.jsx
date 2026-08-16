@@ -3,6 +3,7 @@ import { RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { fetchJobs, toggleSaveItem, syncJobs } from '../api/client';
 import JobCard from '../components/JobCard';
 import FilterBar from '../components/FilterBar';
+import JobDetailsModal from '../components/JobDetailsModal';
 
 const getShortDegree = (deg = '') => {
   if (!deg) return 'Fresher';
@@ -16,6 +17,7 @@ const getShortDegree = (deg = '') => {
 
 const Jobs = ({ onUpdateSavedCount, userProfile = null }) => {
   const [jobs, setJobs] = useState([]);
+  const [selectedJob, setSelectedJob] = useState(null);
   const [pagination, setPagination] = useState({ page: 1, limit: 20, totalPages: 1, total: 0 });
   const [availableCompanies, setAvailableCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -219,7 +221,7 @@ const Jobs = ({ onUpdateSavedCount, userProfile = null }) => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {jobs.map(job => (
-            <JobCard key={job.id} job={job} onToggleSave={handleToggleSave} userProfile={userProfile} />
+            <JobCard key={job.id} job={job} onToggleSave={handleToggleSave} userProfile={userProfile} onSelectJob={(j) => setSelectedJob(j)} />
           ))}
         </div>
       )}
@@ -248,6 +250,15 @@ const Jobs = ({ onUpdateSavedCount, userProfile = null }) => {
           </button>
         </div>
       )}
+
+      {/* In-App Job Details Modal */}
+      <JobDetailsModal
+        job={selectedJob}
+        isOpen={!!selectedJob}
+        onClose={() => setSelectedJob(null)}
+        onToggleSave={handleToggleSave}
+        userProfile={userProfile}
+      />
 
     </div>
   );

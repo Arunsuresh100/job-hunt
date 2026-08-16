@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Calendar, ExternalLink, Bookmark, Clock, Check, Box, Layers, Rocket, Sparkles } from 'lucide-react';
+import { MapPin, Calendar, ExternalLink, Bookmark, Clock, Check, Box, Layers, Rocket, Eye } from 'lucide-react';
 import CompanyLogo from './CompanyLogo';
 
 const capitalizeText = (str) => {
@@ -14,7 +14,27 @@ const capitalizeText = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null, isApplied = false, onToggleApplied = null }) => {
+const formatRelativeTime = (dateStr) => {
+  if (!dateStr) return 'Just Now';
+  const now = Date.now();
+  const posted = new Date(dateStr).getTime();
+  if (isNaN(posted) || posted > now) return 'Just Now';
+
+  const diffMins = Math.floor((now - posted) / (1000 * 60));
+  if (diffMins < 5) return 'Just Now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays === 1) return '1 day ago';
+  if (diffDays < 7) return `${diffDays} days ago`;
+
+  return new Date(dateStr).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+};
+
+const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null, isApplied = false, onToggleApplied = null, onSelectJob = null }) => {
   const {
     id,
     company,
@@ -31,16 +51,14 @@ const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null, i
     isSaved,
   } = job || {};
 
+  const relativeTimeLabel = formatRelativeTime(postedDate);
   const isFresh = daysAgo <= 7 && !isArchived;
 
-  // Calculate Match Score % based on User Profile
-  const userSkills = userProfile?.skills || [];
-  let matchScore = 0;
-  if (userSkills.length > 0) {
-    const text = `${title} ${company} ${location}`.toLowerCase();
-    const count = userSkills.filter(s => text.includes(s.toLowerCase())).length;
-    matchScore = Math.min(98, 75 + count * 8);
-  }
+  const handleCardClick = () => {
+    if (onSelectJob) {
+      onSelectJob(job);
+    }
+  };
 
   // Saved page card variant option
   if (variant === 'saved') {
@@ -48,7 +66,7 @@ const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null, i
       <div className="bg-zinc-900/90 border border-zinc-800/90 hover:border-zinc-700/90 p-4 sm:p-5 rounded-2xl flex flex-col justify-between relative group transition-all duration-200 shadow-md">
         <div>
           <div className="flex items-start justify-between gap-3 mb-3">
-            <div className="flex items-center space-x-3 min-w-0">
+            <div className="flex items-center space-x-3 min-w-0 cursor-pointer" onClick={handleCardClick}>
               <CompanyLogo logoUrl={logoUrl} company={company} applyUrl={applyUrl} className="w-10 h-10" />
 
               <div className="min-w-0 flex-1">
@@ -80,10 +98,10 @@ const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null, i
             </button>
           </div>
 
-          {/* Row 1 Badges: Experience Level & Company Type */}
+          {/* Row 1 Badges */}
           <div className="flex flex-wrap items-center gap-2 mt-3 mb-2">
-            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-950 text-zinc-300 border border-zinc-800/80 capitalize">
-              <Check className="w-3 h-3 text-indigo-400" />
+            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-950 text-zinc-300 border border-zinc-800/80">
+              <Check className="w-3 h-3 text-white" />
               <span>{experienceLevel}</span>
             </span>
 
@@ -109,24 +127,17 @@ const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null, i
             )}
           </div>
 
-          {/* Row 2 Badges: Location (Truncated) & Days Ago */}
+          {/* Row 2 Badges: Location & Accurate Relative Time */}
           <div className="flex items-center gap-2 mb-3 min-w-0">
             <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-950 text-zinc-400 border border-zinc-800/80 capitalize min-w-0 flex-1">
               <MapPin className="w-3 h-3 text-zinc-500 flex-shrink-0" />
               <span className="truncate">{location}</span>
             </span>
 
-            {isFresh ? (
-              <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 capitalize flex-shrink-0">
-                <Clock className="w-3 h-3 text-indigo-400 flex-shrink-0" />
-                <span className="whitespace-nowrap">{daysAgo === 0 ? 'Today' : `${daysAgo}d ago`}</span>
-              </span>
-            ) : (
-              <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-mono text-zinc-400 bg-zinc-950 border border-zinc-800/80 capitalize flex-shrink-0">
-                <Clock className="w-3 h-3 text-zinc-500 flex-shrink-0" />
-                <span className="whitespace-nowrap">{daysAgo}d ago</span>
-              </span>
-            )}
+            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 capitalize flex-shrink-0">
+              <Clock className="w-3 h-3 text-indigo-400 flex-shrink-0" />
+              <span className="whitespace-nowrap">{relativeTimeLabel}</span>
+            </span>
           </div>
         </div>
 
@@ -158,16 +169,14 @@ const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null, i
             </span>
           )}
 
-          <a
-            href={applyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => onToggleApplied && !isApplied && onToggleApplied(id)}
+          <button
+            type="button"
+            onClick={handleCardClick}
             className="flex-1 inline-flex items-center justify-center space-x-1.5 px-2.5 py-2 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-[11px] sm:text-xs shadow-sm transition-all active:scale-95 whitespace-nowrap"
           >
-            <span className="whitespace-nowrap">Apply Official</span>
-            <ExternalLink className="w-3.5 h-3.5 flex-shrink-0" />
-          </a>
+            <Eye className="w-3.5 h-3.5 flex-shrink-0 text-black" />
+            <span className="whitespace-nowrap">View Job Details</span>
+          </button>
         </div>
       </div>
     );
@@ -179,7 +188,7 @@ const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null, i
       {/* Top Header Row */}
       <div>
         <div className="flex items-start justify-between gap-3 mb-3">
-          <div className="flex items-center space-x-3 min-w-0">
+          <div className="flex items-center space-x-3 min-w-0 cursor-pointer" onClick={handleCardClick}>
             <CompanyLogo logoUrl={logoUrl} company={company} applyUrl={applyUrl} className="w-10 h-10" />
 
             <div className="min-w-0 flex-1">
@@ -191,7 +200,7 @@ const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null, i
                   {source || 'Feed'}
                 </span>
               </div>
-              <h3 className="text-sm font-bold text-white group-hover:text-zinc-300 transition-colors line-clamp-1 mt-0.5">
+              <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors line-clamp-1 mt-0.5">
                 {title}
               </h3>
             </div>
@@ -241,24 +250,17 @@ const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null, i
           )}
         </div>
 
-        {/* Row 2 Badges: Location (Truncated) & Days Ago */}
+        {/* Row 2 Badges: Location & Accurate Relative Time */}
         <div className="flex items-center gap-2 mb-3 min-w-0">
           <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-900 text-zinc-400 border border-zinc-800 min-w-0 flex-1">
             <MapPin className="w-3 h-3 text-zinc-500 flex-shrink-0" />
             <span className="truncate">{location}</span>
           </span>
 
-          {isFresh ? (
-            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-white text-black flex-shrink-0">
-              <Clock className="w-3 h-3 text-black flex-shrink-0" />
-              <span className="whitespace-nowrap">{daysAgo === 0 ? 'Today' : `${daysAgo}d ago`}</span>
-            </span>
-          ) : (
-            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-mono text-zinc-400 bg-zinc-900 border border-zinc-800 flex-shrink-0">
-              <Clock className="w-3 h-3 text-zinc-500 flex-shrink-0" />
-              <span className="whitespace-nowrap">{daysAgo}d ago</span>
-            </span>
-          )}
+          <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-white text-black flex-shrink-0">
+            <Clock className="w-3 h-3 text-black flex-shrink-0" />
+            <span className="whitespace-nowrap">{relativeTimeLabel}</span>
+          </span>
         </div>
       </div>
 
@@ -275,15 +277,14 @@ const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null, i
           </span>
         </span>
 
-        <a
-          href={applyUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-zinc-200 text-black font-semibold text-xs transition-all active:scale-95"
+        <button
+          type="button"
+          onClick={handleCardClick}
+          className="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs shadow-md transition-all active:scale-95"
         >
-          <span>Apply Official Site</span>
-          <ExternalLink className="w-3 h-3" />
-        </a>
+          <Eye className="w-3.5 h-3.5 flex-shrink-0 text-black" />
+          <span>View Job Details</span>
+        </button>
       </div>
     </div>
   );
