@@ -4,6 +4,7 @@ import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import Jobs from './pages/Jobs';
 import KeralaJobs from './pages/KeralaJobs';
+import PortalJobs from './pages/PortalJobs';
 import Exams from './pages/Exams';
 import Saved from './pages/Saved';
 import SyncModal from './components/SyncModal';
@@ -145,6 +146,7 @@ function App() {
             <Route path="/" element={<Navigate to="/jobs" replace />} />
             <Route path="/jobs" element={<Jobs key={syncVersion} userProfile={userProfile} onUpdateSavedCount={updateSavedCount} />} />
             <Route path="/kerala-jobs" element={<KeralaJobs key={syncVersion} userProfile={userProfile} onUpdateSavedCount={updateSavedCount} />} />
+            <Route path="/portals" element={<PortalJobs key={syncVersion} userProfile={userProfile} onUpdateSavedCount={updateSavedCount} />} />
             <Route path="/exams" element={<Exams key={syncVersion} onUpdateSavedCount={updateSavedCount} />} />
             <Route path="/saved" element={<Saved key={syncVersion} onUpdateSavedCount={updateSavedCount} />} />
             <Route path="*" element={<Navigate to="/jobs" replace />} />

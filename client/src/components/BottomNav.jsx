@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Briefcase, GraduationCap, Bookmark, MapPin } from 'lucide-react';
+import { Briefcase, GraduationCap, Bookmark, MapPin, Globe } from 'lucide-react';
 
 const BottomNav = ({ savedCount = 0 }) => {
   const location = useLocation();
@@ -10,6 +10,7 @@ const BottomNav = ({ savedCount = 0 }) => {
   const navItems = [
     { path: '/jobs', label: 'Jobs', icon: Briefcase },
     { path: '/kerala-jobs', label: 'Kerala', icon: MapPin },
+    { path: '/portals', label: 'Portals', icon: Globe },
     { path: '/exams', label: 'Exams', icon: GraduationCap },
     { path: '/saved', label: 'Saved', icon: Bookmark, count: savedCount },
   ];

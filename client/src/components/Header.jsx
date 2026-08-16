@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Briefcase, GraduationCap, Bookmark, RefreshCw, MapPin } from 'lucide-react';
+import { Briefcase, GraduationCap, Bookmark, RefreshCw, MapPin, Globe } from 'lucide-react';
 
 const Header = ({ savedCount = 0, onSync, isSyncing = false, userProfile = null, onOpenProfileModal }) => {
   const location = useLocation();
@@ -10,6 +10,7 @@ const Header = ({ savedCount = 0, onSync, isSyncing = false, userProfile = null,
   const navLinks = [
     { path: '/jobs', label: 'Latest Jobs', icon: Briefcase, badge: '7 Days' },
     { path: '/kerala-jobs', label: 'Kerala Jobs', icon: MapPin, badge: '🌴 Kerala' },
+    { path: '/portals', label: 'LinkedIn & Naukri', icon: Globe, badge: 'Portals' },
     { path: '/exams', label: 'Exam Updates', icon: GraduationCap },
     { path: '/saved', label: 'Saved', icon: Bookmark, count: savedCount },
   ];

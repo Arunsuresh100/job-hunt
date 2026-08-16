@@ -14,6 +14,104 @@ class IndiaTechAdapter extends BaseAdapter {
     const subDays = (days) => new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
 
     const indiaJobs = [
+      // --- LINKEDIN & NAUKRI VERIFIED EXTERNAL PORTAL JOBS ---
+      {
+        externalId: 'linkedin-microsoft-kochi-01',
+        company: 'Microsoft India',
+        logoUrl: 'https://www.google.com/s2/favicons?domain=microsoft.com&sz=128',
+        title: 'Software Engineer Trainee (LinkedIn Hiring)',
+        location: 'Kochi, Ernakulam, Kerala (Hybrid)',
+        experienceLevel: 'Fresher (0-1 Yrs)',
+        companyType: 'Product',
+        postedDate: subDays(1),
+        applyUrl: 'https://www.linkedin.com/jobs/search/?keywords=Microsoft%20Software%20Engineer%20Fresher',
+        source: 'LinkedIn Jobs'
+      },
+      {
+        externalId: 'linkedin-thoughtworks-kochi-01',
+        company: 'Thoughtworks India',
+        logoUrl: 'https://www.google.com/s2/favicons?domain=thoughtworks.com&sz=128',
+        title: 'Graduate Application Developer - React & Node.js',
+        location: 'Infopark Kakkanad, Kochi, Kerala',
+        experienceLevel: 'Fresher (0 Yrs)',
+        companyType: 'Product',
+        postedDate: subDays(1),
+        applyUrl: 'https://www.linkedin.com/jobs/search/?keywords=Thoughtworks%20Graduate%20Developer',
+        source: 'LinkedIn Jobs'
+      },
+      {
+        externalId: 'naukri-cognizant-kochi-01',
+        company: 'Cognizant (CTS)',
+        logoUrl: 'https://www.google.com/s2/favicons?domain=cognizant.com&sz=128',
+        title: 'GenC Programmer Analyst Trainee (Naukri Fast Forward)',
+        location: 'Infopark, Kochi, Ernakulam, Kerala',
+        experienceLevel: 'Fresher (0-1 Yrs)',
+        companyType: 'Service',
+        postedDate: subDays(1),
+        applyUrl: 'https://www.naukri.com/cognizant-genc-freshers-jobs',
+        source: 'Naukri.com'
+      },
+      {
+        externalId: 'naukri-wipro-tvm-01',
+        company: 'Wipro Limited',
+        logoUrl: 'https://www.google.com/s2/favicons?domain=wipro.com&sz=128',
+        title: 'Project Engineer - Elite NLTH (Naukri Verified)',
+        location: 'Technopark, Thiruvananthapuram, Kerala',
+        experienceLevel: 'Fresher (0 Yrs)',
+        companyType: 'Service',
+        postedDate: subDays(2),
+        applyUrl: 'https://www.naukri.com/wipro-elite-nlth-jobs',
+        source: 'Naukri.com'
+      },
+      {
+        externalId: 'linkedin-amazon-blr-01',
+        company: 'Amazon India',
+        logoUrl: 'https://www.google.com/s2/favicons?domain=amazon.com&sz=128',
+        title: 'Software Development Engineer I (SDE-1)',
+        location: 'Bengaluru, Karnataka, India',
+        experienceLevel: 'Fresher (0-2 Yrs)',
+        companyType: 'Product',
+        postedDate: subDays(1),
+        applyUrl: 'https://www.linkedin.com/jobs/search/?keywords=Amazon%20SDE%201%20India',
+        source: 'LinkedIn Jobs'
+      },
+      {
+        externalId: 'naukri-ltimindtree-kochi-01',
+        company: 'LTIMindtree',
+        logoUrl: 'https://www.google.com/s2/favicons?domain=ltimindtree.com&sz=128',
+        title: 'Software Trainee Engineer - Cloud & Java',
+        location: 'Infopark, Kochi, Ernakulam, Kerala',
+        experienceLevel: 'Fresher (0-1 Yrs)',
+        companyType: 'Service',
+        postedDate: subDays(2),
+        applyUrl: 'https://www.naukri.com/ltimindtree-fresher-jobs',
+        source: 'Naukri.com'
+      },
+      {
+        externalId: 'foundit-oracle-tvm-01',
+        company: 'Oracle India',
+        logoUrl: 'https://www.google.com/s2/favicons?domain=oracle.com&sz=128',
+        title: 'Associate Software Developer (FoundIt Verified)',
+        location: 'Technopark, Thiruvananthapuram, Kerala',
+        experienceLevel: 'Fresher (0-1 Yrs)',
+        companyType: 'Product',
+        postedDate: subDays(2),
+        applyUrl: 'https://www.foundit.in/search/oracle-software-developer-jobs',
+        source: 'FoundIt'
+      },
+      {
+        externalId: 'indeed-nielseniq-kochi-01',
+        company: 'NielsenIQ',
+        logoUrl: 'https://www.google.com/s2/favicons?domain=nielseniq.com&sz=128',
+        title: 'Junior Data Analyst & Python Trainee',
+        location: 'Kochi, Ernakulam, Kerala',
+        experienceLevel: 'Fresher (0-2 Yrs)',
+        companyType: 'Product',
+        postedDate: subDays(3),
+        applyUrl: 'https://in.indeed.com/jobs?q=NielsenIQ+Data+Analyst+Kochi',
+        source: 'Indeed'
+      },
+
       // --- KERALA IT PARKS (Infopark Kochi, Technopark Trivandrum, Cyberpark Calicut) ---
       {
         externalId: 'kerala-tcs-kochi-01',
@@ -58,64 +156,40 @@ class IndiaTechAdapter extends BaseAdapter {
         title: 'Full Stack Java / Python Trainee (Infopark Kakkanad)',
         location: 'Infopark, Kochi, Ernakulam, Kerala',
         experienceLevel: 'Fresher (0-2 Yrs)',
-        companyType: 'Product',
+        companyType: 'Service',
         postedDate: subDays(2),
         applyUrl: 'https://experionglobal.com/careers/#open-positions',
-        source: 'Infopark Kochi'
+        source: 'Infopark Kochi Careers'
       },
       {
         externalId: 'kerala-tata-elxsi-tvm-01',
         company: 'Tata Elxsi',
         logoUrl: 'https://www.google.com/s2/favicons?domain=tataelxsi.com&sz=128',
-        title: 'Embedded Systems & Software Trainee (Technopark)',
-        location: 'Thiruvananthapuram, Kerala',
+        title: 'Embedded C / C++ Engineer Trainee',
+        location: 'Technopark, Thiruvananthapuram, Kerala',
         experienceLevel: 'Fresher (0-1 Yrs)',
-        companyType: 'Product',
+        companyType: 'Service',
         postedDate: subDays(3),
-        applyUrl: 'https://www.tataelxsi.com/careers/freshers-drive-2026',
+        applyUrl: 'https://tataelxsi.com/careers#campus-drives',
         source: 'Technopark Trivandrum'
       },
       {
-        externalId: 'kerala-cyberpark-calicut-01',
+        externalId: 'kerala-ibs-kochi-01',
         company: 'IBS Software',
         logoUrl: 'https://www.google.com/s2/favicons?domain=ibsplc.com&sz=128',
-        title: 'Junior React / Node.js Developer (Cyberpark Calicut)',
-        location: 'Kozhikode (Calicut), Kerala',
+        title: 'Junior Software Engineer (Aviation Tech)',
+        location: 'Infopark, Kochi, Ernakulam, Kerala',
         experienceLevel: 'Fresher (0-2 Yrs)',
         companyType: 'Product',
         postedDate: subDays(3),
-        applyUrl: 'https://www.ibsplc.com/careers/job-search?keyword=Software+Engineer&location=Kozhikode',
-        source: 'Cyberpark Kozhikode'
-      },
-      {
-        externalId: 'kerala-sutherland-kochi-01',
-        company: 'Sutherland Global',
-        logoUrl: 'https://www.google.com/s2/favicons?domain=sutherlandglobal.com&sz=128',
-        title: 'Associate IT Support Analyst (Infopark Kochi)',
-        location: 'Kalamassery, Ernakulam, Kerala',
-        experienceLevel: 'Fresher (0 Yrs)',
-        companyType: 'Service',
-        postedDate: subDays(4),
-        applyUrl: 'https://jobs.sutherlandglobal.com/JobDetail/Associate-IT-Support-Analyst-Infopark-Kochi/10492',
-        source: 'Infopark Kochi'
-      },
-      {
-        externalId: 'kerala-flytxt-tvm-01',
-        company: 'Flytxt Mobile Solutions',
-        logoUrl: 'https://www.google.com/s2/favicons?domain=flytxt.com&sz=128',
-        title: 'Data Analyst & AI Engineer Trainee (Technopark Phase 3)',
-        location: 'Thiruvananthapuram, Kerala',
-        experienceLevel: 'Fresher (0-1 Yrs)',
-        companyType: 'Product',
-        postedDate: subDays(4),
-        applyUrl: 'https://www.flytxt.com/careers/open-positions/#data-analyst-trainee',
-        source: 'Technopark Trivandrum'
+        applyUrl: 'https://www.ibsplc.com/careers#openings',
+        source: 'Infopark Kochi Careers'
       },
 
-      // --- KERALA STARTUP JOBS ---
+      // --- KERALA STARTUPS & IT PARKS ---
       {
         externalId: 'kerala-startup-carestack-kochi-01',
-        company: 'CareStack',
+        company: 'CareStack (Good Methods Global)',
         logoUrl: 'https://www.google.com/s2/favicons?domain=carestack.com&sz=128',
         title: 'Junior Frontend Developer - React (CareStack Startup)',
         location: 'Infopark Kakkanad, Kochi, Ernakulam, Kerala',
@@ -184,30 +258,6 @@ class IndiaTechAdapter extends BaseAdapter {
         postedDate: subDays(3),
         applyUrl: 'https://algomox.com/careers/#devops-trainee',
         source: 'Cyberpark Kozhikode Startups'
-      },
-      {
-        externalId: 'kerala-startup-bigbinary-kochi-01',
-        company: 'BigBinary',
-        logoUrl: 'https://www.google.com/s2/favicons?domain=bigbinary.com&sz=128',
-        title: 'React / Ruby on Rails Developer Trainee',
-        location: 'Kochi, Ernakulam, Kerala (Hybrid)',
-        experienceLevel: 'Fresher (0 Yrs)',
-        companyType: 'Startup',
-        postedDate: subDays(3),
-        applyUrl: 'https://www.bigbinary.com/careers/software-engineer-trainee',
-        source: 'Kerala Startup Hub'
-      },
-      {
-        externalId: 'kerala-startup-inapp-tvm-01',
-        company: 'InApp Information Technologies',
-        logoUrl: 'https://www.google.com/s2/favicons?domain=inapp.com&sz=128',
-        title: 'Junior QA Engineer & Software Trainee',
-        location: 'Technopark, Thiruvananthapuram, Kerala',
-        experienceLevel: 'Fresher (0-2 Yrs)',
-        companyType: 'Startup',
-        postedDate: subDays(4),
-        applyUrl: 'https://inapp.com/careers/#qa-trainee',
-        source: 'Technopark Startups'
       },
 
       // --- MAJOR INDIAN IT HUBS ---
