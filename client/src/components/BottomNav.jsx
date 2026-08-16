@@ -15,7 +15,7 @@ const BottomNav = ({ savedCount = 0 }) => {
   ];
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-zinc-950 via-emerald-950/60 to-zinc-950 backdrop-blur-2xl border-t border-emerald-500/30 px-3 py-2 flex items-center justify-around shadow-[0_-10px_25px_-5px_rgba(0,0,0,0.9)] transition-all duration-200">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-black via-emerald-950/30 to-black backdrop-blur-2xl border-t border-emerald-500/20 px-3 py-2 flex items-center justify-around shadow-[0_-10px_25px_-5px_rgba(0,0,0,0.95)] transition-all duration-200">
       {navItems.map((item) => {
         const Icon = item.icon;
         const active = isActive(item.path);
