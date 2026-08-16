@@ -15,7 +15,7 @@ const Header = ({ savedCount = 0, onSync, isSyncing = false, userProfile = null,
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-zinc-950/95 backdrop-blur-xl border-b border-zinc-800/80 shadow-md">
+    <header className="sticky top-0 z-40 w-full bg-gradient-to-r from-zinc-950 via-emerald-950/40 to-zinc-950 backdrop-blur-xl border-b border-emerald-500/20 shadow-xl">
       <div className="max-w-6xl mx-auto px-3 sm:px-6">
         <div className="flex items-center justify-between h-14 sm:h-16">
           
