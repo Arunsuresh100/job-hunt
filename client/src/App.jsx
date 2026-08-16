@@ -9,6 +9,7 @@ import Saved from './pages/Saved';
 import SyncModal from './components/SyncModal';
 import AppLoadingScreen from './components/AppLoadingScreen';
 import OnboardingModal from './components/OnboardingModal';
+import ScrollToTop from './components/ScrollToTop';
 import { fetchSavedItems, syncJobs } from './api/client';
 
 function App() {
@@ -149,6 +150,9 @@ function App() {
             <Route path="*" element={<Navigate to="/jobs" replace />} />
           </Routes>
         </main>
+
+        {/* Universal Floating Scroll To Top Button */}
+        <ScrollToTop />
 
         {/* Mobile App Bottom Navigation Bar (3 Core Options) */}
         <BottomNav savedCount={savedCount} />

@@ -14,7 +14,7 @@ const capitalizeText = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null }) => {
+const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null, isApplied = false, onToggleApplied = null }) => {
   const {
     id,
     company,
@@ -42,14 +42,10 @@ const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null })
     matchScore = Math.min(98, 75 + count * 8);
   }
 
-  // Saved page card variant option if needed
+  // Saved page card variant option
   if (variant === 'saved') {
     return (
-      <div
-        className={`bg-zinc-900/90 border border-zinc-800/90 hover:border-zinc-700/90 p-4 sm:p-5 rounded-2xl flex flex-col justify-between relative group transition-all duration-200 shadow-md ${
-          isFresh ? 'border-l-4 border-l-indigo-500' : 'border-l-4 border-l-zinc-700 opacity-90'
-        }`}
-      >
+      <div className="bg-zinc-900/90 border border-zinc-800/90 hover:border-zinc-700/90 p-4 sm:p-5 rounded-2xl flex flex-col justify-between relative group transition-all duration-200 shadow-md">
         <div>
           <div className="flex items-start justify-between gap-3 mb-3">
             <div className="flex items-center space-x-3 min-w-0">
@@ -75,12 +71,12 @@ const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null })
               onClick={() => onToggleSave && onToggleSave('JOB', id)}
               className={`p-2 rounded-xl border transition-all active:scale-90 flex-shrink-0 ${
                 isSaved
-                  ? 'bg-purple-600 text-white border-purple-500 shadow-md shadow-purple-500/20'
+                  ? 'bg-white text-black border-white shadow-md shadow-white/10 font-bold'
                   : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white hover:border-zinc-700'
               }`}
               title={isSaved ? 'Remove Bookmark' : 'Bookmark Job'}
             >
-              <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
+              <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current text-black' : ''}`} />
             </button>
           </div>
 
@@ -134,26 +130,43 @@ const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null })
           </div>
         </div>
 
-        <div className="pt-3 mt-2 border-t border-zinc-800/80 flex items-center justify-between">
-          <span className="text-[11px] font-mono text-zinc-500 flex items-center space-x-1">
-            <Calendar className="w-3 h-3 text-zinc-600" />
-            <span>
-              {new Date(postedDate).toLocaleDateString(undefined, {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-              })}
+        {/* Footer Row */}
+        <div className="pt-3 mt-2 border-t border-zinc-800/80 flex items-center justify-between gap-2">
+          {onToggleApplied ? (
+            <button
+              type="button"
+              onClick={() => onToggleApplied(id)}
+              className={`flex-1 inline-flex items-center justify-center space-x-1.5 px-2.5 py-2 rounded-xl text-[11px] sm:text-xs font-bold border transition-all active:scale-95 whitespace-nowrap ${
+                isApplied
+                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-sm'
+                  : 'bg-zinc-950 text-zinc-300 border-zinc-800 hover:text-white hover:border-zinc-700'
+              }`}
+            >
+              <Check className={`w-3.5 h-3.5 flex-shrink-0 ${isApplied ? 'text-emerald-400' : 'text-zinc-500'}`} />
+              <span className="whitespace-nowrap">{isApplied ? 'Applied ✓' : 'Mark Applied'}</span>
+            </button>
+          ) : (
+            <span className="text-[11px] font-mono text-zinc-500 flex items-center space-x-1">
+              <Calendar className="w-3 h-3 text-zinc-600" />
+              <span>
+                {new Date(postedDate).toLocaleDateString(undefined, {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
+              </span>
             </span>
-          </span>
+          )}
 
           <a
             href={applyUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-xs shadow-sm transition-all active:scale-95 capitalize"
+            onClick={() => onToggleApplied && !isApplied && onToggleApplied(id)}
+            className="flex-1 inline-flex items-center justify-center space-x-1.5 px-2.5 py-2 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-[11px] sm:text-xs shadow-sm transition-all active:scale-95 whitespace-nowrap"
           >
-            <span>Apply Official Site</span>
-            <ExternalLink className="w-3.5 h-3.5" />
+            <span className="whitespace-nowrap">Apply Official</span>
+            <ExternalLink className="w-3.5 h-3.5 flex-shrink-0" />
           </a>
         </div>
       </div>
@@ -162,11 +175,7 @@ const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null })
 
   // Standard Job Card Design
   return (
-    <div
-      className={`mono-card p-5 rounded-xl flex flex-col justify-between relative group ${
-        isFresh ? 'border-l-2 border-l-white' : 'border-l-2 border-l-zinc-700 opacity-80'
-      }`}
-    >
+    <div className="mono-card p-5 rounded-xl flex flex-col justify-between relative group">
       {/* Top Header Row */}
       <div>
         <div className="flex items-start justify-between gap-3 mb-3">
@@ -254,7 +263,7 @@ const JobCard = ({ job, onToggleSave, variant = 'default', userProfile = null })
       </div>
 
       {/* Footer Row */}
-      <div className="pt-3 mt-2 border-t border-zinc-800/80 flex items-center justify-between">
+      <div className="pt-3 mt-2 border-t border-zinc-800/80 flex items-center justify-between gap-2">
         <span className="text-[11px] font-mono text-zinc-500 flex items-center space-x-1">
           <Calendar className="w-3 h-3 text-zinc-600" />
           <span>

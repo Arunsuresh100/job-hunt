@@ -35,11 +35,11 @@ const BottomNav = ({ savedCount = 0 }) => {
             <div className="relative">
               <Icon
                 className={`w-5 h-5 transition-transform duration-200 ${
-                  active ? 'text-indigo-400 scale-110' : 'text-zinc-400'
+                  active ? 'text-emerald-400 scale-110' : 'text-zinc-400'
                 }`}
               />
               {item.count !== undefined && item.count > 0 && (
-                <span className="absolute -top-1.5 -right-2.5 px-1.5 py-0.2 text-[9px] font-bold rounded-full bg-purple-500 text-white shadow-sm font-mono animate-in zoom-in-50 duration-150">
+                <span className="absolute -top-1.5 -right-2.5 px-1.5 py-0.2 text-[9px] font-black rounded-full bg-white text-black shadow-sm font-mono animate-in zoom-in-50 duration-150">
                   {item.count}
                 </span>
               )}
